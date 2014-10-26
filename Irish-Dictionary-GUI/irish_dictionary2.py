@@ -13,10 +13,6 @@ class WordLookup(object): # Create a class to look up the word
     def __init__(self,word,language):
         self.word = urllib.parse.quote_plus(word)
         self.language = language
-        """if language in {"IRISH","I","GAEILGE","G"}:
-            self.language = "Irish"
-        elif language in {"ENGLISH","E","BEARLA","B"}:
-            self.language = "English"""
     
     def entry_lookup(self):
         """ This method searches and gets the data for entry and suggestion
@@ -63,24 +59,6 @@ def irish_dictionary(word,language,wordlist=[]):
     returns the word and related words. If no word exists, it returns similar
     words as given by the website.  """
     
-    
-    control = True # Create a a variable to control the loop
-    
-    # Make sure language is either Irish or English
-    """while control:
-        # Gets the language and makes it uppercase
-        language = input("What language is the word in, English or Irish? (Q to quit) \n").upper()
-        if language in {"IRISH","I","GAEILGE","G","ENGLISH","E","BEARLA","B"}:
-            control = False
-        elif language in {"Q" or "QUIT"}:
-            return
-        else:    
-            print("Please choose Irish or English")
-            
-    # Get the word in form where fada works
-    word = input("What is the word?\n")
-    
-    """
     # Gets the entry and suggestions
     entry, suggestion = WordLookup(word,language).entry_lookup()
     
@@ -91,19 +69,7 @@ def irish_dictionary(word,language,wordlist=[]):
 
     return entries, suggestions 
 
-    """# Print the entries
-    for i in entries:
-        print("\n"+ i + "\n")
-    suggestions=str(suggestions[0]) # Converts into list for stripping
-    suggestions = ' '.join(suggestions.split()) #Splits and readds, thus stripping
-
     
-    print(suggestions+"\n") # Prints the suggestions
-
-    wordlist = WordStore(word,wordlist).append()
-    print("Recently used words")
-    print(wordlist)
-    """
     
        
 if __name__ == '__main__':
