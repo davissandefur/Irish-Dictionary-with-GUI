@@ -25,7 +25,7 @@ def callback1():
         wordlist.pop()
     st.text.insert(END,"\n\nRecently used words: ")
     st.text.insert(END,wordlist)
-    st.text.insert(END,"\n")
+    st.text.insert(END,"\n\n")
     
 
     
@@ -45,7 +45,7 @@ def callback2():
         wordlist.pop()
     st.text.insert(END,"\n\nRecently used words: ")
     st.text.insert(END,wordlist)
-    st.text.insert(END,"\n")
+    st.text.insert(END,"\n\n")
     
 
 
