@@ -1,7 +1,10 @@
-# Breis.focloir.ie dictionary checker
-# Saved as irish dictionary.py
-# Created by Davis Sandefur; last update 25/10/14
+# Irish Dictionary Checker Modules
+# Saved as dictionary_classes.py
+# Created by Davis Sandefur; last updated 29.10.14
 
+"""This module contains all the classes needed to scrub Breis.focloir.ie,
+either in English or Irish , as well as the classes needed to parse the HTML
+and create a running word list of the words.""" 
 
 import urllib.request
 import urllib.parse
@@ -13,6 +16,7 @@ class WordLookup(object): # Create a class to look up the word
     def __init__(self,word,language):
         self.word = urllib.parse.quote_plus(word)
         self.language = language
+        
     
     def entry_lookup(self):
         """ This method searches and gets the data for entry and suggestion
@@ -53,24 +57,3 @@ class WordStore(object):
         if len(self.wordlist)> 5:
             self.wordlist.pop()
         return self.wordlist
-    
-def irish_dictionary(word,language,wordlist=[]):
-    """ This function checks breis.focloir.ie for a word, Irish or English, and
-    returns the word and related words. If no word exists, it returns similar
-    words as given by the website.  """
-    
-    # Gets the entry and suggestions
-    entry, suggestion = WordLookup(word,language).entry_lookup()
-    
-    # Get entires and suggestions in a list using HTMLRead class
-    entries = HTMLRead(entry).append()
-    suggestions = HTMLRead(suggestion).append()
-    #wordlist = WordStore(word,wordlist).append()
-
-    return entries, suggestions 
-
-    
-    
-       
-if __name__ == '__main__':
-    irish_dictionary()
