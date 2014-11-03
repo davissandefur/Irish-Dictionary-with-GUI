@@ -2,11 +2,13 @@
 # Saved as dictionary_gui.py
 # Last updated by: Davis Sandefur 2/11/14
 
-# TODO: Add Irish Language Version
 
 from tkinter import *
 from irish_dictionary import irish_dictionary
+from dictionary_classes import StringCleanup
 
+
+# TODO: Add Irish Language Version
 
 class Callback:
 
@@ -16,8 +18,7 @@ class Callback:
         for i in entries:
             frame3.st.insert(END, i)
             frame3.st.insert(END, '\n\n')
-        suggestions = str(suggestions[0])
-        suggestions = ' '.join(suggestions.split())
+        suggestions = StringCleanup(suggestions).cleanup()
         frame3.st.insert(END, "\n")
         frame3.st.insert(END, suggestions)
         frame3.st.insert(END, "\n\nRecently used words: ")
@@ -30,8 +31,7 @@ class Callback:
         for i in entries:
             frame3.st.insert(END, i)
             frame3.st.insert(END, "\n\n")
-        suggestions = str(suggestions[0])
-        suggestions = ' '.join(suggestions.split())
+        suggestions = StringCleanup(suggestions).cleanup()
         frame3.st.insert(END, "\n")
         frame3.st.insert(END, suggestions)
         frame3.st.insert(END, "\n\nRecently used words: ")
@@ -39,14 +39,26 @@ class Callback:
         frame3.st.insert(END, "\n\n")
 
 
-class FirstFrame():
+class FirstFrame(object):
     def __init__(self):
         self.frame1 = Frame()
         self.frame1.pack()
-        l = Label(self.frame1, text="Enter your word:")
-        l.pack(side=LEFT, expand=True, ipadx=100)
         self.entry = Entry(self.frame1)
-        self.entry.pack(side=RIGHT, expand=True, ipadx=122)
+
+        if language.language == 'English':
+            l = Label(self.frame1, text="Enter your word:")
+            l.pack(side=LEFT, expand=True, ipadx=50)
+            language_button = Button(self.frame1, text="Leagan Gaeilge", command=language.english_to_irish)
+            language_button.pack(side=RIGHT, padx=50)
+
+
+        if language.language == 'Irish':
+            l = Label(self.frame1, text="Cuir d'fhocal anseo")
+            l.pack(side=LEFT, expand=True, ipadx=50)
+            language_button = Button(self.frame1, text="English Version", command=language.irish_to_english)
+            language_button.pack(side=RIGHT, padx=50)
+
+        self.entry.pack(expand=True, ipadx=50)
 
 
 class Buttons():
@@ -57,7 +69,6 @@ class Buttons():
         english_button.pack(side=LEFT, expand=True, ipadx=145)
         irish_button = Button(self.frame2, text='Irish', command=Callback.irish_callback)
         irish_button.pack(side=RIGHT, expand=True, ipadx=145)
-
 
 
 class ScrollText():
@@ -72,8 +83,25 @@ class ScrollText():
         self.st.pack(side=LEFT, fill=BOTH, expand=1)
 
 
+class LanguageSwitcher:
+    def __init__(self):
+        self.language = 'English'  # English is default language
+
+
+    def english_to_irish(self):
+        """ This callback changes language to Irish  """
+        self.language = 'Irish'
+        print("This is being used")
+
+    def irish_to_english(self):
+        """ This callback changes language to English """
+        self.language = 'English'
+        print("This is being used")
+
+
 master = Tk()  # Create your Tk object
 master.title("Irish Dictionary Searcher")
+language = LanguageSwitcher()
 frame1 = FirstFrame()
 frame2 = Buttons()
 frame3 = ScrollText()
