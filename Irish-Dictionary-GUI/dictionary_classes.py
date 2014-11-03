@@ -45,3 +45,15 @@ class WordStore(object):
             self.wordlist.pop()
         return self.wordlist
  
+class StringCleanup(object):
+    """ This class cleans white space, etc out of a string
+    """
+
+    def __init__(self, string):
+        self.string = string
+        self.suggestions = self.cleanup()
+
+    def cleanup(self):
+        suggestions = str(self.string[0])
+        suggestions = ' '.join(suggestions.split())
+        return suggestions
