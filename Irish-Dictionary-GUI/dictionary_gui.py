@@ -1,66 +1,89 @@
 # Irish Dictionary GUI
 # Saved as dictionary_gui.py
-# Last updated by: Davis Sandefur 7/11/14
+# Last updated by: Davis Sandefur 14/11/14
 
 from tkinter import *
 from irish_dictionary import irish_dictionary
-from dictionary_classes import StringCleanup
-
+from dictionary_classes import StringCleanup, SuggestionsToIrish
 
 class Callback:
 
+    def bearla_callback():
+        """ Called when user presses 'Béarla'
+        """
+        entries, suggestions, wordlist = irish_dictionary(irish_label.entry.get(), 'English')
+        for i in entries:
+            text_widget.st.insert(END, i)
+            text_widget.st.insert(END, '\n\n')
+        suggestions = StringCleanup(suggestions).cleanup()
+        text_widget.st.insert(END, "\n")
+        text_widget.st.insert(END, suggestions)
+        text_widget.st.insert(END, "\n\nNa focail is déanaí: ")
+        text_widget.st.insert(END, wordlist)
+        text_widget.st.insert(END, "\n\n")
+
+
+    def gaeilge_callback():
+        """ Called when user presses 'Gaeilge'
+        """
+        entries, suggestions, wordlist = irish_dictionary(irish_label.entry.get(), 'Irish')
+        for i in entries:
+            text_widget.st.insert(END, i)
+            text_widget.st.insert(END, '\n\n')
+        suggestions = StringCleanup(suggestions).cleanup()
+        text_widget.st.insert(END, "\n")
+        text_widget.st.insert(END, suggestions)
+        text_widget.st.insert(END, "\n\nNa focail is déanaí: ")
+        text_widget.st.insert(END, wordlist)
+        text_widget.st.insert(END, "\n\n")
+
+
     def english_callback():
         """Called when the user presses 'English'"""
-        entries, suggestions, wordlist = irish_dictionary(frame1.entry.get(), 'English')
+        entries, suggestions, wordlist = irish_dictionary(english_label.entry.get(), 'English')
         for i in entries:
-            frame3.st.insert(END, i)
-            frame3.st.insert(END, '\n\n')
+            text_widget.st.insert(END, i)
+            text_widget.st.insert(END, '\n\n')
         suggestions = StringCleanup(suggestions).cleanup()
-        frame3.st.insert(END, "\n")
-        frame3.st.insert(END, suggestions)
-        frame3.st.insert(END, "\n\nRecently used words: ")
-        frame3.st.insert(END, wordlist)
-        frame3.st.insert(END, "\n\n")
+        text_widget.st.insert(END, "\n")
+        text_widget.st.insert(END, suggestions)
+        text_widget.st.insert(END, "\n\nRecently used words: ")
+        text_widget.st.insert(END, wordlist)
+        text_widget.st.insert(END, "\n\n")
 
     def irish_callback():
         """Called when the user presses 'Irish'"""
-        entries, suggestions, wordlist = irish_dictionary(frame1.entry.get(), 'Irish')
+        entries, suggestions, wordlist = irish_dictionary(english_label.entry.get(), 'Irish')
         for i in entries:
-            frame3.st.insert(END, i)
-            frame3.st.insert(END, "\n\n")
+            text_widget.st.insert(END, i)
+            text_widget.st.insert(END, "\n\n")
         suggestions = StringCleanup(suggestions).cleanup()
-        frame3.st.insert(END, "\n")
-        frame3.st.insert(END, suggestions)
-        frame3.st.insert(END, "\n\nRecently used words: ")
-        frame3.st.insert(END, wordlist)
-        frame3.st.insert(END, "\n\n")
+        text_widget.st.insert(END, "\n")
+        text_widget.st.insert(END, suggestions)
+        text_widget.st.insert(END, "\n\nRecently used words: ")
+        text_widget.st.insert(END, wordlist)
+        text_widget.st.insert(END, "\n\n")
 
     def english_to_irish():
         """ This is called when the button to turn the interface to Irish is pressed"""
-        frame1.entry.pack_forget()  # Forget English entry
-        frame1.entry = Entry(frame1.irish_frame, text="Cuir d'fhocal anseo")  # Create new entry for Irish version
-        frame1.entry.pack(expand=True, fill=Y)
-        frame1.english_frame.pack_forget()  # Forget English version of input
-        frame1.irish_frame.pack(expand=True, fill=Y)
-        frame2.english_frame.pack_forget()  # Forget the English buttons
-        frame2.irish_frame.pack(expand=True, fill=Y)
-        frame3.frame3.pack_forget()  # Remove scrollable text from top
-        frame3.frame3.pack(expand=True, fill=BOTH)  # Repack scrollable text at bottom
+        english_label.english_frame.pack_forget()
+        irish_label.irish_frame.pack(expand=True, fill=Y)
+        english_buttons.english_frame.pack_forget()  # Forget the English buttons
+        irish_buttons.irish_frame.pack(expand=True, fill=Y)
+        text_widget.text_widget.pack_forget()  # Remove scrollable text from top
+        text_widget.text_widget.pack(expand=True, fill=BOTH)  # Repack scrollable text at bottom
 
     def irish_to_english():
-        """ This is called when th button to turn the interface to English is pressed """
-        frame1.entry.pack_forget()  # Forget the Irish entry
-        frame1.entry = Entry(frame1.english_frame, text="Enter your word here")  # Create new entry with English version
-        frame1.entry.pack(expand=True, fill=BOTH)
-        frame1.irish_frame.pack_forget()  # Forget the rest of the Irish input version
-        frame1.english_frame.pack(expand=True, fill=Y)
-        frame2.irish_frame.pack_forget()  # Forget the Irish buttons
-        frame2.english_frame.pack(expand=True, fill=Y)
-        frame3.frame3.pack_forget()  # Remove scrollable text from top
-        frame3.frame3.pack(expand=True, fill=BOTH)  # Repack scrollable text at bottom
+        """This is called when th button to turn the interface to English is pressed"""
+        irish_label.irish_frame.pack_forget()
+        english_label.english_frame.pack()
+        irish_buttons.irish_frame.pack_forget()  # Forget the Irish buttons
+        english_buttons.english_frame.pack(expand=True, fill=Y)
+        text_widget.text_widget.pack_forget()  # Remove scrollable text from top
+        text_widget.text_widget.pack(expand=True, fill=BOTH)  # Repack scrollable text at bottom"""
 
 
-class FirstFrame(object):
+class EnglishLabel(object):
     def __init__(self, root):
         # Create a frame for the English version
         self.english_frame = Frame(root)
@@ -70,9 +93,14 @@ class FirstFrame(object):
         english_label.pack(side=LEFT, expand=True, ipadx=50, fill=Y)
         english_language_button = Button(self.english_frame, text="Leagan Gaeilge", command=Callback.english_to_irish)
         english_language_button.pack(side=RIGHT, padx=50, fill=Y)
+        self.entry.pack(expand=True, ipadx=50, fill=Y)  # Pack entry at the very end
 
-        # Create a frame for the Irish version
+
+class IrishLabel(object):
+    def __init__(self, root):
         self.irish_frame = Frame(root)
+        # Create a frame for the Irish version
+        self.entry = Entry(self.irish_frame)
         irish_label = Label(self.irish_frame, text="Cuir d'fhocal anseo")
         irish_label.pack(side=LEFT, expand=True, ipadx=50, fill=Y)
         irish_language_button = Button(self.irish_frame, text="English Version", command=Callback.irish_to_english)
@@ -80,9 +108,8 @@ class FirstFrame(object):
         self.entry.pack(expand=True, ipadx=50, fill=Y)  # Pack entry at the very end
 
 
-class Buttons(object):
+class EnglishButtons(object):
     def __init__(self, root):
-
         # Create a frame for the English language buttons
         self.english_frame = Frame(root)
         self.english_frame.pack(expand=True, fill=Y)
@@ -91,20 +118,23 @@ class Buttons(object):
         irish_button = Button(self.english_frame, text='Irish', command=Callback.irish_callback)
         irish_button.pack(side=RIGHT, expand=True, ipadx=145, fill=Y)
 
+
+class IrishButtons(object):
+    def __init__(self, root):
         # Create a second frame to hold the Irish language buttons
         self.irish_frame = Frame(root)
-        bearla_button = Button(self.irish_frame, text='Béarla', command=Callback.english_callback)
+        bearla_button = Button(self.irish_frame, text='Béarla', command=Callback.bearla_callback)
         bearla_button.pack(side=LEFT, expand=True, ipadx=145, fill=Y)
-        gaeilge_button = Button(self.irish_frame, text='Gaeilge', command=Callback.irish_callback)
+        gaeilge_button = Button(self.irish_frame, text='Gaeilge', command=Callback.gaeilge_callback)
         gaeilge_button.pack(side=RIGHT, expand=True, ipadx=145, fill=Y)
 
 
 class ScrollText(object):
     def __init__(self, root):
-        self.frame3 = Frame(root)
-        self.frame3.pack(expand=True, fill=BOTH)
-        self.st = Text(self.frame3)
-        scrollbar = Scrollbar(self.frame3)
+        self.text_widget = Frame(root)
+        self.text_widget.pack(expand=True, fill=BOTH)
+        self.st = Text(self.text_widget)
+        scrollbar = Scrollbar(self.text_widget)
         scrollbar.pack(side=RIGHT, fill=Y)
         scrollbar.config(command=self.st.yview)  # Linking scroll
         self.st.config(yscrollcommand=scrollbar.set)  # Linking scroll
@@ -112,7 +142,9 @@ class ScrollText(object):
 
 master = Tk()  # Create your Tk object
 master.title("Irish Dictionary Searcher")
-frame1 = FirstFrame(master)
-frame2 = Buttons(master)
-frame3 = ScrollText(master)
+english_label = EnglishLabel(master)
+irish_label = IrishLabel(master)
+english_buttons = EnglishButtons(master)
+irish_buttons = IrishButtons(master)
+text_widget = ScrollText(master)
 master.mainloop()
