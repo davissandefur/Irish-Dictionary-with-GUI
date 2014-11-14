@@ -16,6 +16,7 @@ class Callback:
             text_widget.st.insert(END, i)
             text_widget.st.insert(END, '\n\n')
         suggestions = StringCleanup(suggestions).cleanup()
+        suggestions = SuggestionsToIrish(suggestions).language_change()
         text_widget.st.insert(END, "\n")
         text_widget.st.insert(END, suggestions)
         text_widget.st.insert(END, "\n\nNa focail is déanaí: ")
@@ -30,7 +31,8 @@ class Callback:
         for i in entries:
             text_widget.st.insert(END, i)
             text_widget.st.insert(END, '\n\n')
-        suggestions = StringCleanup(suggestions).cleanup()
+        suggestions = StringCleanup(suggestions).cleanup() 
+        suggestions = SuggestionsToIrish(suggestions).language_change()
         text_widget.st.insert(END, "\n")
         text_widget.st.insert(END, suggestions)
         text_widget.st.insert(END, "\n\nNa focail is déanaí: ")
