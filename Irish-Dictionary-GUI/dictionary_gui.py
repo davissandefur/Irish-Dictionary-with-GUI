@@ -1,12 +1,17 @@
 # Irish Dictionary GUI
 # Saved as dictionary_gui.py
-# Last updated by: Davis Sandefur 14/11/14
+# Last updated by: Davis Sandefur 15/11/14
+
+
+ # TODO: Sound support for Irish words if sound available on breis.focloir.ie/fuaim
 
 from tkinter import *
 from irish_dictionary import irish_dictionary
 from dictionary_classes import StringCleanup, SuggestionsToIrish
 
 class Callback:
+    """ This class contains all callbacks for the program
+    """
 
     def bearla_callback():
         """ Called when user presses 'Béarla'
@@ -22,6 +27,7 @@ class Callback:
         text_widget.st.insert(END, "\n\nNa focail is déanaí: ")
         text_widget.st.insert(END, wordlist)
         text_widget.st.insert(END, "\n\n")
+        text_widget.st.see(END)
 
 
     def gaeilge_callback():
@@ -31,14 +37,14 @@ class Callback:
         for i in entries:
             text_widget.st.insert(END, i)
             text_widget.st.insert(END, '\n\n')
-        suggestions = StringCleanup(suggestions).cleanup() 
+        suggestions = StringCleanup(suggestions).cleanup()
         suggestions = SuggestionsToIrish(suggestions).language_change()
         text_widget.st.insert(END, "\n")
         text_widget.st.insert(END, suggestions)
         text_widget.st.insert(END, "\n\nNa focail is déanaí: ")
         text_widget.st.insert(END, wordlist)
         text_widget.st.insert(END, "\n\n")
-
+        text_widget.st.see(END)
 
     def english_callback():
         """Called when the user presses 'English'"""
@@ -52,6 +58,7 @@ class Callback:
         text_widget.st.insert(END, "\n\nRecently used words: ")
         text_widget.st.insert(END, wordlist)
         text_widget.st.insert(END, "\n\n")
+        text_widget.st.see(END)
 
     def irish_callback():
         """Called when the user presses 'Irish'"""
@@ -65,6 +72,7 @@ class Callback:
         text_widget.st.insert(END, "\n\nRecently used words: ")
         text_widget.st.insert(END, wordlist)
         text_widget.st.insert(END, "\n\n")
+        text_widget.st.see(END)
 
     def english_to_irish():
         """ This is called when the button to turn the interface to Irish is pressed"""
@@ -74,6 +82,7 @@ class Callback:
         irish_buttons.irish_frame.pack(expand=True, fill=Y)
         text_widget.text_widget.pack_forget()  # Remove scrollable text from top
         text_widget.text_widget.pack(expand=True, fill=BOTH)  # Repack scrollable text at bottom
+        text_widget.st.see(END)
 
     def irish_to_english():
         """This is called when th button to turn the interface to English is pressed"""
@@ -83,9 +92,12 @@ class Callback:
         english_buttons.english_frame.pack(expand=True, fill=Y)
         text_widget.text_widget.pack_forget()  # Remove scrollable text from top
         text_widget.text_widget.pack(expand=True, fill=BOTH)  # Repack scrollable text at bottom"""
+        text_widget.st.see(END)
 
 
 class EnglishLabel(object):
+    """ This class contains the English version of the labels for the word input
+    """
     def __init__(self, root):
         # Create a frame for the English version
         self.english_frame = Frame(root)
@@ -99,6 +111,8 @@ class EnglishLabel(object):
 
 
 class IrishLabel(object):
+    """ This class contains the Irish version of the labels for the word input
+    """
     def __init__(self, root):
         self.irish_frame = Frame(root)
         # Create a frame for the Irish version
@@ -111,6 +125,8 @@ class IrishLabel(object):
 
 
 class EnglishButtons(object):
+    """ This class contains the English version of buttons that determine which language is searched
+    """
     def __init__(self, root):
         # Create a frame for the English language buttons
         self.english_frame = Frame(root)
@@ -122,6 +138,8 @@ class EnglishButtons(object):
 
 
 class IrishButtons(object):
+    """ This class contains the Irish version of buttons that determine which language is searched
+    """
     def __init__(self, root):
         # Create a second frame to hold the Irish language buttons
         self.irish_frame = Frame(root)
@@ -132,6 +150,8 @@ class IrishButtons(object):
 
 
 class ScrollText(object):
+    """ This class contains a scrollable text widget
+    """
     def __init__(self, root):
         self.text_widget = Frame(root)
         self.text_widget.pack(expand=True, fill=BOTH)
