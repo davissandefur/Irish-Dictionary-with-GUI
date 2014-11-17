@@ -6,6 +6,4 @@ GUI (nothing pretty here) and allows users to input a word, then click whether i
 It then gets the HTML for the entry and returns the entry, suggestions, and a list of recently used words (max 5) to
 the user. 
 
-Uses GUI out of swampy. It can be dowloaded for free at: http://www.greenteapress.com/thinkpython/swampy/. Eventually,
-it will be moved away from Swampy and into a tkinter outline (which Swampy uses), however, the author's book was being
-used when the program was created.
+The option of language is also included, and the user can switch between Irish and English versions. Sound support is being worked on, if breis.focloir.ie contains the word.
