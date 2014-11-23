@@ -2,17 +2,18 @@
 # Saved as dictionary_gui.py
 # Last updated by: Davis Sandefur 15/11/14
 
-
- # TODO: Sound support for Irish words if sound available on breis.focloir.ie/fuaim
+# TODO: Sound support for Irish words if sound available on breis.focloir.ie/fuaim
 
 from tkinter import *
 from irish_dictionary import irish_dictionary
 from dictionary_classes import StringCleanup, SuggestionsToIrish
 
+
 class Callback:
     """ This class contains all callbacks for the program
     """
 
+    @staticmethod
     def bearla_callback():
         """ Called when user presses 'Béarla'
         """
@@ -29,7 +30,7 @@ class Callback:
         text_widget.st.insert(END, "\n\n")
         text_widget.st.see(END)
 
-
+    @staticmethod
     def gaeilge_callback():
         """ Called when user presses 'Gaeilge'
         """
@@ -46,6 +47,7 @@ class Callback:
         text_widget.st.insert(END, "\n\n")
         text_widget.st.see(END)
 
+    @staticmethod
     def english_callback():
         """Called when the user presses 'English'"""
         entries, suggestions, wordlist = irish_dictionary(english_label.entry.get(), 'English')
@@ -60,6 +62,7 @@ class Callback:
         text_widget.st.insert(END, "\n\n")
         text_widget.st.see(END)
 
+    @staticmethod
     def irish_callback():
         """Called when the user presses 'Irish'"""
         entries, suggestions, wordlist = irish_dictionary(english_label.entry.get(), 'Irish')
@@ -74,6 +77,7 @@ class Callback:
         text_widget.st.insert(END, "\n\n")
         text_widget.st.see(END)
 
+    @staticmethod
     def english_to_irish():
         """ This is called when the button to turn the interface to Irish is pressed"""
         english_label.english_frame.pack_forget()
@@ -84,6 +88,7 @@ class Callback:
         text_widget.text_widget.pack(expand=True, fill=BOTH)  # Repack scrollable text at bottom
         text_widget.st.see(END)
 
+    @staticmethod
     def irish_to_english():
         """This is called when th button to turn the interface to English is pressed"""
         irish_label.irish_frame.pack_forget()
@@ -91,7 +96,7 @@ class Callback:
         irish_buttons.irish_frame.pack_forget()  # Forget the Irish buttons
         english_buttons.english_frame.pack(expand=True, fill=Y)
         text_widget.text_widget.pack_forget()  # Remove scrollable text from top
-        text_widget.text_widget.pack(expand=True, fill=BOTH)  # Repack scrollable text at bottom"""
+        text_widget.text_widget.pack(expand=True, fill=BOTH)  # Repack scrollable text at bottom
         text_widget.st.see(END)
 
 
@@ -101,7 +106,7 @@ class EnglishLabel(object):
     def __init__(self, root):
         # Create a frame for the English version
         self.english_frame = Frame(root)
-        self.english_frame.pack(expand=True, fill=Y)  # English is default version
+        self.english_frame.pack(expand=True, fill=Y)  #
         self.entry = Entry(self.english_frame)
         english_label = Label(self.english_frame, text="Enter your word:")
         english_label.pack(side=LEFT, expand=True, ipadx=50, fill=Y)
