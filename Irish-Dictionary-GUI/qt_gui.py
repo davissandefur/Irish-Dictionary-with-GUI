@@ -3,7 +3,7 @@ from PyQt4 import QtCore, QtGui
 from irish_dictionary import irish_dictionary
 from dictionary_classes import StringCleanup, SuggestionsToIrish
 
-# TODO: Add finishing touches for English version and implement the switch.
+# TODO: Add sound file support for Irish words, if files exist. If not, suggest similar words that do have sound.
 
 
 class Callback():
