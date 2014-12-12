@@ -1,7 +1,11 @@
+# Irish Dictionary GUI app
+# saved as qt_gui.py
+# Last edit by Davis Sandefur 12.11.2014
+
 import sys
 from PyQt4 import QtCore, QtGui
 from irish_dictionary import irish_dictionary
-from dictionary_classes import string_cleanup, language_change
+from dictionary_functions import language_change
 
 # TODO: Implement sound support for words that have it.
 
@@ -17,7 +21,6 @@ class Callback():
         for i in entries:
             irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
             irish_version.text_entry.insertPlainText(i + '\n\n')
-        suggestions = string_cleanup(suggestions)
         suggestions = language_change(suggestions)
         irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
         irish_version.text_entry.insertPlainText(suggestions + "\n\nNa focail is déanaí: " + str(wordlist) +
@@ -32,7 +35,6 @@ class Callback():
         for i in entries:
             irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
             irish_version.text_entry.insertPlainText(i + '\n\n')
-        suggestions = string_cleanup(suggestions)
         suggestions = language_change(suggestions)
         irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
         irish_version.text_entry.insertPlainText(suggestions + "\n\nNa focail is déanaí: " + str(wordlist) + "\n\n")
@@ -47,7 +49,6 @@ class Callback():
         for i in entries:
             english_version.text_entry.moveCursor(QtGui.QTextCursor.End)
             english_version.text_entry.insertPlainText(i + '\n\n')
-        suggestions = string_cleanup(suggestions)
         english_version.text_entry.moveCursor(QtGui.QTextCursor.End)
         english_version.text_entry.insertPlainText(suggestions + "\n\nRecently used words: " + str(wordlist) +
                                                    "\n\n")
@@ -61,7 +62,6 @@ class Callback():
         for i in entries:
             english_version.text_entry.moveCursor(QtGui.QTextCursor.End)
             english_version.text_entry.insertPlainText(i + '\n\n')
-        suggestions = string_cleanup(suggestions)
         english_version.text_entry.moveCursor(QtGui.QTextCursor.End)
         english_version.text_entry.insertPlainText(suggestions + "\n\nRecently used words: " + str(wordlist) + "\n\n")
         english_version.text_entry.moveCursor(QtGui.QTextCursor.End)

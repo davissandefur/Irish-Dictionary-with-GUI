@@ -6,7 +6,7 @@
 
 from tkinter import *
 from irish_dictionary import irish_dictionary
-from dictionary_classes import string_cleanup, language_change
+from dictionary_functions import language_change
 
 
 class Callback:
@@ -21,7 +21,6 @@ class Callback:
         for i in entries:
             text_widget.st.insert(END, i)
             text_widget.st.insert(END, '\n\n')
-        suggestions = string_cleanup(suggestions)
         suggestions = language_change(suggestions)
         text_widget.st.insert(END, "\n")
         text_widget.st.insert(END, suggestions)
@@ -38,7 +37,6 @@ class Callback:
         for i in entries:
             text_widget.st.insert(END, i)
             text_widget.st.insert(END, '\n\n')
-        suggestions = string_cleanup(suggestions)
         suggestions = language_change(suggestions)
         text_widget.st.insert(END, "\n")
         text_widget.st.insert(END, suggestions)
@@ -54,7 +52,6 @@ class Callback:
         for i in entries:
             text_widget.st.insert(END, i)
             text_widget.st.insert(END, '\n\n')
-        suggestions = StringCleanup(suggestions).cleanup()
         text_widget.st.insert(END, "\n")
         text_widget.st.insert(END, suggestions)
         text_widget.st.insert(END, "\n\nRecently used words: ")
@@ -69,7 +66,6 @@ class Callback:
         for i in entries:
             text_widget.st.insert(END, i)
             text_widget.st.insert(END, "\n\n")
-        suggestions = string_cleanup(suggestions)
         text_widget.st.insert(END, "\n")
         text_widget.st.insert(END, suggestions)
         text_widget.st.insert(END, "\n\nRecently used words: ")
