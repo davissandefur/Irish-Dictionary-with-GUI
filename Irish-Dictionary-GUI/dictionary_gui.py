@@ -1,12 +1,12 @@
 # Irish Dictionary GUI
 # Saved as dictionary_gui.py
-# Last updated by: Davis Sandefur 15/11/14
+# Last updated by: Davis Sandefur 11.12.14
 
 # TODO: Sound support for Irish words if sound available on breis.focloir.ie/fuaim
 
 from tkinter import *
 from irish_dictionary import irish_dictionary
-from dictionary_classes import StringCleanup, SuggestionsToIrish
+from dictionary_classes import string_cleanup, language_change
 
 
 class Callback:
@@ -21,8 +21,8 @@ class Callback:
         for i in entries:
             text_widget.st.insert(END, i)
             text_widget.st.insert(END, '\n\n')
-        suggestions = StringCleanup(suggestions).cleanup()
-        suggestions = SuggestionsToIrish(suggestions).language_change()
+        suggestions = string_cleanup(suggestions)
+        suggestions = language_change(suggestions)
         text_widget.st.insert(END, "\n")
         text_widget.st.insert(END, suggestions)
         text_widget.st.insert(END, "\n\nNa focail is déanaí: ")
@@ -38,8 +38,8 @@ class Callback:
         for i in entries:
             text_widget.st.insert(END, i)
             text_widget.st.insert(END, '\n\n')
-        suggestions = StringCleanup(suggestions).cleanup()
-        suggestions = SuggestionsToIrish(suggestions).language_change()
+        suggestions = string_cleanup(suggestions)
+        suggestions = language_change(suggestions)
         text_widget.st.insert(END, "\n")
         text_widget.st.insert(END, suggestions)
         text_widget.st.insert(END, "\n\nNa focail is déanaí: ")
@@ -69,7 +69,7 @@ class Callback:
         for i in entries:
             text_widget.st.insert(END, i)
             text_widget.st.insert(END, "\n\n")
-        suggestions = StringCleanup(suggestions).cleanup()
+        suggestions = string_cleanup(suggestions)
         text_widget.st.insert(END, "\n")
         text_widget.st.insert(END, suggestions)
         text_widget.st.insert(END, "\n\nRecently used words: ")
