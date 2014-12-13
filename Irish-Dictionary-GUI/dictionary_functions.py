@@ -1,11 +1,11 @@
 # Irish Dictionary Checker Modules
-# Saved as dictionary_classes.py
+# Saved as dictionary_functions.py
 # Created by Davis Sandefur; last updated 11.12.14
 
 # TODO: Sound support for Irish words if sound available on breis.focloir.ie/fuaim
 
-"""This module contains all the classes needed to scrub Breis.focloir.ie,
-either in English or Irish , as well as the classes needed to parse the HTML
+"""This module contains all the functions needed to scrub Breis.focloir.ie,
+either in English or Irish , as well as the functions needed to parse the HTML
 and create a running word list of the words.""" 
 
 
@@ -15,7 +15,7 @@ from bs4 import BeautifulSoup
 
 
 def entry_lookup(word, language):
-    """ This method searches and gets the data for entry and suggestion
+    """ This function searches and gets the data for entry and suggestion
     from breis.focloir.ie.
     """
     word = urllib.parse.quote_plus(word)
