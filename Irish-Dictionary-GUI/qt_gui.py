@@ -1,9 +1,9 @@
 # Irish Dictionary GUI app
 # saved as qt_gui.py
-# Last edit by Davis Sandefur 12.11.2014
+# Last edit by Davis Sandefur 15.12.2014
 
 import sys
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets, QtGui
 from irish_dictionary import irish_dictionary
 from dictionary_functions import language_change
 
@@ -87,60 +87,60 @@ class Callback():
 
 
 # Create Irish version widgets
-class IrishLabel(QtGui.QWidget):
+class IrishLabel(QtWidgets.QWidget):
     def __init__(self, parent=None):
         """ This class creates the Irish language label, entry box, and version switcher """
         super().__init__(parent)
-        self.irish_label = QtGui.QLabel("Cuir d'fhocal anseo:")
-        self.irish_entry = QtGui.QLineEdit()
-        self.english_language_button = QtGui.QPushButton("English Version")
+        self.irish_label = QtWidgets.QLabel("Cuir d'fhocal anseo:")
+        self.irish_entry = QtWidgets.QLineEdit()
+        self.english_language_button = QtWidgets.QPushButton("English Version")
 
         self.english_language_button.clicked.connect(lambda: Callback.irish_to_english())
 
 
-class IrishButtons(QtGui.QWidget):
+class IrishButtons(QtWidgets.QWidget):
     """ this class creates the Irish language buttons"""
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.bearla_button = QtGui.QPushButton("Béarla")
-        self.gaeilge_button = QtGui.QPushButton("Gaeilge")
+        self.bearla_button = QtWidgets.QPushButton("Béarla")
+        self.gaeilge_button = QtWidgets.QPushButton("Gaeilge")
 
         self.bearla_button.clicked.connect(lambda: Callback.bearla_callback())
         self.gaeilge_button.clicked.connect(lambda: Callback.gaeilge_callback())
 
 
 # Create English version widgets
-class EnglishLabel(QtGui.QWidget):
+class EnglishLabel(QtWidgets.QWidget):
     """ This class Creates English labels"""
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.english_label = QtGui.QLabel("Enter your word here:")
-        self.english_entry = QtGui.QLineEdit()
-        self.irish_language_button = QtGui.QPushButton("Leagan Gaeilge")
+        self.english_label = QtWidgets.QLabel("Enter your word here:")
+        self.english_entry = QtWidgets.QLineEdit()
+        self.irish_language_button = QtWidgets.QPushButton("Leagan Gaeilge")
 
         self.irish_language_button.clicked.connect(lambda: Callback.english_to_irish())
 
 
-class EnglishButtons(QtGui.QWidget):
+class EnglishButtons(QtWidgets.QWidget):
     """ This class creates the English version buttons"""
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.english_button = QtGui.QPushButton("English")
-        self.irish_button = QtGui.QPushButton("Irish")
+        self.english_button = QtWidgets.QPushButton("English")
+        self.irish_button = QtWidgets.QPushButton("Irish")
 
         self.english_button.clicked.connect(lambda: Callback.english_callback())
         self.irish_button.clicked.connect(lambda: Callback.irish_callback())
 
 
-class Text(QtGui.QWidget):
+class Text(QtWidgets.QWidget):
     """ This class creates the text widget"""
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.text_entry = QtGui.QTextEdit(parent)
+        self.text_entry = QtWidgets.QTextEdit(parent)
         self.text_entry.setReadOnly(True)
 
 
-class IrishVersion(QtGui.QWidget):
+class IrishVersion(QtWidgets.QWidget):
     """ This class brings together all the Irish version widgets and
     lays them out in the correct order. Also controls window title and maximize button
     """
@@ -153,7 +153,7 @@ class IrishVersion(QtGui.QWidget):
         self.gaeilge = irish_buttons.gaeilge_button
         self.text_entry = text.text_entry
 
-        grid = QtGui.QGridLayout()
+        grid = QtWidgets.QGridLayout()
         grid.setSpacing(5)
 
         grid.addWidget(self.label, 0, 0)
@@ -170,12 +170,12 @@ class IrishVersion(QtGui.QWidget):
     def center(self):
 
         qr = self.frameGeometry()
-        cp = QtGui.QDesktopWidget().availableGeometry().center()
+        cp = QtWidgets.QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
 
-class EnglishVersion(QtGui.QWidget):
+class EnglishVersion(QtWidgets.QWidget):
     """ This class brings together all the English version widgets and lays them out in the correct
     order. Also controls the English version window title and disables the maximize button
     """
@@ -188,7 +188,7 @@ class EnglishVersion(QtGui.QWidget):
         self.gaeilge = english_buttons.irish_button
         self.text_entry = text.text_entry
 
-        grid = QtGui.QGridLayout()
+        grid = QtWidgets.QGridLayout()
         grid.setSpacing(5)
 
         grid.addWidget(self.label, 0, 0)
@@ -200,17 +200,19 @@ class EnglishVersion(QtGui.QWidget):
         self.setLayout(grid)
 
         self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
+        self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
+
         self.setWindowTitle("Breis.focloir.ie Searcher")
         self.resize(200, 400)
 
     def center(self):
 
         qr = self.frameGeometry()
-        cp = QtGui.QDesktopWidget().availableGeometry().center()
+        cp = QtWidgets.QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-app = QtGui.QApplication(sys.argv)
+app = QtWidgets.QApplication(sys.argv)
 irish_label = IrishLabel()
 english_label = EnglishLabel()
 irish_buttons = IrishButtons()
@@ -220,4 +222,4 @@ irish_version = IrishVersion()
 english_version = EnglishVersion()
 english_version.show()
 english_version.center()
-app.exec_()
+sys.exit(app.exec_())
