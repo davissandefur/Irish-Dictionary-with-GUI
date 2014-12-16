@@ -164,6 +164,8 @@ class IrishVersion(QtWidgets.QWidget):
         self.setLayout(grid)
 
         self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
+        self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
+
         self.setWindowTitle("Foclóir")
         self.resize(200, 400)
 
