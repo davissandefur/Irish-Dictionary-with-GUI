@@ -10,6 +10,7 @@ matches. If neither, it returns None
 
 from bs4 import BeautifulSoup
 import urllib.request
+import urllib.error
 import urllib.parse
 
 
@@ -17,7 +18,9 @@ def entry_search(word):
     """ This function downloads sound for the string <word> if it exists.  If word exists, it also returns TRUE. If words
     don't exist, it returns FALSE
     """
+
     word = urllib.parse.quote_plus(word)
+
     for i in range(len(word)):
         if word[i] == "+":
             begin_word = word[:i]
@@ -29,8 +32,13 @@ def entry_search(word):
     slug_list = ['CanM', 'CanC', 'CanU']
     for i in slug_list:
         url = 'http://breis.focloir.ie/' + i + '%2F' + word + '.mp3'
-        print(url)  # Test to check URL
-        urllib.request.urlretrieve(url, i+'.mp3')
+        # print(url)  # Test to check URL
+        try:
+            urllib.request.urlretrieve(url, i+'.mp3')
+        except urllib.error.HTTPError:
+            return False
+
+    return True
 
 
 def related_matches(word):
@@ -54,13 +62,9 @@ def related_matches(word):
     return entries
 
 
-
-
-
-
-
 if __name__ == '__main__':
-    entry_search('téigh')
-    entry_search('seo a chuaigh thart')
+    print(entry_search('téigh'))
+    print(entry_search('seo a chuaigh thart'))
+    print(entry_search('hello'))
     print(related_matches('téigh'))
     print(related_matches('seo a chuaigh thart'))
