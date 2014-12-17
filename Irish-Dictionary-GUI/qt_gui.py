@@ -11,20 +11,15 @@ from audio_grabber import entry_search, related_matches
 # TODO: Implement sound support for words that have it.
 # TODO: Figure out what the is going on with QtMultimedia and get it to play.
 
-global audio
-
 
 class Callback():
 
-    def __init__(self):
-        self.audio = False  # Set audio as False at first so buttons are greyed out and no audio there
-
     # Define the Irish version callbacks
-    def bearla_callback(self):
+    @staticmethod
+    def bearla_callback():
         """ Irish version English-language search """
         entry = str(irish_version.entry.text()).lower()
         entries, suggestions, wordlist = irish_dictionary(entry, 'English')
-        self.audio = False  # No audio for English words
         for i in entries:
             irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
             irish_version.text_entry.insertPlainText(i + '\n\n')
@@ -34,12 +29,12 @@ class Callback():
                                                  "\n\n" + 'Níl aon fuaim ar fhocail as Béarla.\n\n')
         irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
 
-    def gaeilge_callback(self):
+    @staticmethod
+    def gaeilge_callback():
         """ Irish version Irish-language search """
         entry = str(irish_version.entry.text()).lower()
         entries, suggestions, wordlist = irish_dictionary(entry, 'Irish')
         related = related_matches(entry)
-        self.audio = entry_search(entry)
         for i in entries:
             irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
             irish_version.text_entry.insertPlainText(i + '\n\n')
@@ -50,11 +45,11 @@ class Callback():
         irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
 
     # Define English version callbacks
-    def english_callback(self):
+    @staticmethod
+    def english_callback():
         """ English version English-language search """
         entry = str(english_version.entry.text()).lower()
         entries, suggestions, wordlist = irish_dictionary(entry, 'English')
-        self.audio = False  # No audio for English words
         for i in entries:
             english_version.text_entry.moveCursor(QtGui.QTextCursor.End)
             english_version.text_entry.insertPlainText(i + '\n\n')
@@ -63,12 +58,12 @@ class Callback():
                                                    "\n\n" + 'No audio for English words.\n\n')
         english_version.text_entry.moveCursor(QtGui.QTextCursor.End)
 
-    def irish_callback(self):
+    @staticmethod
+    def irish_callback():
         """ This method is the English version Irish-language search """
         entry = str(english_version.entry.text()).lower()
         entries, suggestions, wordlist = irish_dictionary(entry, 'Irish')
         related = related_matches(entry)
-        self.audio = entry_search(entry)
         for i in entries:
             english_version.text_entry.moveCursor(QtGui.QTextCursor.End)
             english_version.text_entry.insertPlainText(i + '\n\n')
@@ -117,6 +112,8 @@ class Callback():
     def ulster():
         """ This method plays the Ulster recording, it it exists"""
 
+global callback
+callback = Callback()
 # Create Irish version widgets
 
 
