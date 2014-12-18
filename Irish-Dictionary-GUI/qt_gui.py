@@ -43,6 +43,7 @@ class Callback():
         irish_version.text_entry.insertPlainText(suggestions + "\n\nNa focail is déanaí: " + str(wordlist) + "\n\n"
                                                  + '(Fuaim) Torthaí gaolmhara: ' + str(related) + '\n\n')
         irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
+        return entry_search(entry)
 
     # Define English version callbacks
     @staticmethod
@@ -71,6 +72,7 @@ class Callback():
         english_version.text_entry.insertPlainText(suggestions + "\n\nRecently used words: " + str(wordlist) + "\n\n"
                                                    + '(Audio) Related Matches: ' + str(related) + '\n\n')
         english_version.text_entry.moveCursor(QtGui.QTextCursor.End)
+        return entry_search(entry)
 
     # Define language switching callbacks
     @staticmethod
@@ -79,7 +81,7 @@ class Callback():
         irish_version.hide()
         english_version.show()
         irish_version.layout().removeWidget(irish_version.text_entry)
-        english_version.layout().addWidget(english_version.text_entry, 2, 0, 24, 8)
+        english_version.layout().addWidget(english_version.text_entry, 3, 0, 24, 8)
         english_version.resize(200, 400)
         english_version.center()
 
@@ -89,7 +91,7 @@ class Callback():
         english_version.hide()
         irish_version.show()
         english_version.layout().removeWidget(english_version.text_entry)
-        irish_version.layout().addWidget(irish_version.text_entry, 2, 0, 24, 8)
+        irish_version.layout().addWidget(irish_version.text_entry, 3, 0, 24, 8)
         irish_version.resize(200, 400)
         irish_version.center()
 
@@ -102,8 +104,6 @@ class Callback():
         player.setMedia(content)
         player.play()
 
-
-
     @staticmethod
     def connacht():
         """ This method plays the Connacht recording if it exists"""
@@ -112,11 +112,8 @@ class Callback():
     def ulster():
         """ This method plays the Ulster recording, it it exists"""
 
-global callback
-callback = Callback()
+
 # Create Irish version widgets
-
-
 class IrishLabel(QtWidgets.QWidget):
     def __init__(self, parent=None):
         """ This class creates the Irish language label, entry box, and version switcher """
@@ -133,9 +130,31 @@ class IrishButtons(QtWidgets.QWidget):
         super().__init__(parent)
         self.bearla_button = QtWidgets.QPushButton("Béarla")
         self.gaeilge_button = QtWidgets.QPushButton("Gaeilge")
+        self.connacht_button = QtWidgets.QPushButton("Cúige Chonnacht")
+        self.ulster_button = QtWidgets.QPushButton("Cúige Uladh")
+        self.munster_button = QtWidgets.QPushButton("Cúige Mhumhan")
+        self.connacht_button.setEnabled(False)
+        self.ulster_button.setEnabled(False)
+        self.munster_button.setEnabled(False)
+        self.bearla_button.clicked.connect(lambda: self.audio_english())
+        self.gaeilge_button.clicked.connect(lambda: self.audio_check())
 
-        self.bearla_button.clicked.connect(lambda: Callback.bearla_callback())
-        self.gaeilge_button.clicked.connect(lambda: Callback.gaeilge_callback())
+    def audio_english(self):
+        Callback.bearla_callback()
+        self.ulster_button.setEnabled(False)
+        self.connacht_button.setEnabled(False)
+        self.munster_button.setEnabled(False)
+
+    def audio_check(self):
+        audio = Callback.gaeilge_callback()
+        if audio:
+            self.ulster_button.setEnabled(True)
+            self.connacht_button.setEnabled(True)
+            self.munster_button.setEnabled(True)
+        if not audio:
+            self.ulster_button.setEnabled(False)
+            self.connacht_button.setEnabled(False)
+            self.munster_button.setEnabled(False)
 
 
 # Create English version widgets
@@ -146,7 +165,6 @@ class EnglishLabel(QtWidgets.QWidget):
         self.english_label = QtWidgets.QLabel("Enter your word here:")
         self.english_entry = QtWidgets.QLineEdit()
         self.irish_language_button = QtWidgets.QPushButton("Leagan Gaeilge")
-
         self.irish_language_button.clicked.connect(lambda: Callback.english_to_irish())
 
 
@@ -156,9 +174,33 @@ class EnglishButtons(QtWidgets.QWidget):
         super().__init__(parent)
         self.english_button = QtWidgets.QPushButton("English")
         self.irish_button = QtWidgets.QPushButton("Irish")
+        self.audio = False  # Initial audio setting
+        self.ulster_button = QtWidgets.QPushButton("Ulster Dialect")
+        self.connacht_button = QtWidgets.QPushButton("Connacht Dialect")
+        self.munster_button = QtWidgets.QPushButton("Munster Dialect")
+        self.english_button.clicked.connect(lambda: self.audio_english())
+        self.irish_button.clicked.connect(lambda: self.audio_check())
+        self.ulster_button.setEnabled(False)
+        self.munster_button.setEnabled(False)
+        self.connacht_button.setEnabled(False)
 
-        self.english_button.clicked.connect(lambda: Callback.english_callback())
-        self.irish_button.clicked.connect(lambda: Callback.irish_callback())
+    def audio_english(self):
+        Callback.english_callback()
+        self.ulster_button.setEnabled(False)
+        self.connacht_button.setEnabled(False)
+        self.munster_button.setEnabled(False)
+
+    def audio_check(self):
+        self.audio = Callback.irish_callback()
+        if self.audio:
+            self.ulster_button.setEnabled(True)
+            self.connacht_button.setEnabled(True)
+            self.munster_button.setEnabled(True)
+        if not self.audio:
+            self.ulster_button.setEnabled(False)
+            self.connacht_button.setEnabled(False)
+            self.munster_button.setEnabled(False)
+        print(self.audio)
 
 
 class Text(QtWidgets.QWidget):
@@ -181,6 +223,9 @@ class IrishVersion(QtWidgets.QWidget):
         self.bearla = irish_buttons.bearla_button
         self.gaeilge = irish_buttons.gaeilge_button
         self.text_entry = text.text_entry
+        self.ulster = irish_buttons.ulster_button
+        self.connacht = irish_buttons.connacht_button
+        self.munster = irish_buttons.munster_button
 
         grid = QtWidgets.QGridLayout()
         grid.setSpacing(5)
@@ -190,6 +235,9 @@ class IrishVersion(QtWidgets.QWidget):
         grid.addWidget(self.switcher, 0, 6)
         grid.addWidget(self.bearla, 1, 2)
         grid.addWidget(self.gaeilge, 1, 4)
+        grid.addWidget(self.ulster, 2, 2)
+        grid.addWidget(self.connacht, 2, 3)
+        grid.addWidget(self.munster, 2, 4)
         self.setLayout(grid)
 
         self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
@@ -218,6 +266,9 @@ class EnglishVersion(QtWidgets.QWidget):
         self.bearla = english_buttons.english_button
         self.gaeilge = english_buttons.irish_button
         self.text_entry = text.text_entry
+        self.connacht = english_buttons.connacht_button
+        self.ulster = english_buttons.ulster_button
+        self.munster = english_buttons.munster_button
 
         grid = QtWidgets.QGridLayout()
         grid.setSpacing(5)
@@ -227,7 +278,10 @@ class EnglishVersion(QtWidgets.QWidget):
         grid.addWidget(self.switcher, 0, 6)
         grid.addWidget(self.bearla, 1, 2)
         grid.addWidget(self.gaeilge, 1, 4)
-        grid.addWidget(self.text_entry, 2, 0, 24, 8)
+        grid.addWidget(self.ulster, 2, 2)
+        grid.addWidget(self.connacht, 2, 3)
+        grid.addWidget(self.munster, 2, 4)
+        grid.addWidget(self.text_entry, 3, 0, 24, 8)
         self.setLayout(grid)
 
         self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
@@ -243,7 +297,7 @@ class EnglishVersion(QtWidgets.QWidget):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-#Callback.munster()
+
 app = QtWidgets.QApplication(sys.argv)
 irish_label = IrishLabel()
 english_label = EnglishLabel()
