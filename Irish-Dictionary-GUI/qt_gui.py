@@ -1,6 +1,6 @@
 # Irish Dictionary GUI app
 # saved as qt_gui.py
-# Last edit by Davis Sandefur 16.12.2014
+# Last edit by Davis Sandefur 18.12.2014
 
 import sys, os
 from PyQt5 import QtCore, QtWidgets, QtGui, QtMultimedia
