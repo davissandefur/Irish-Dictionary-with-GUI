@@ -1,6 +1,6 @@
 # Irish Dictionary Checker Modules
 # Saved as dictionary_functions.py
-# Created by Davis Sandefur; last updated 11.12.14
+# Created by Davis Sandefur; last updated 18.12.14
 
 # TODO: Sound support for Irish words if sound available on breis.focloir.ie/fuaim
 
@@ -11,6 +11,7 @@ and create a running word list of the words."""
 
 import urllib.request
 import urllib.parse
+import urllib.error
 from bs4 import BeautifulSoup
 
 
@@ -21,7 +22,11 @@ def entry_lookup(word, language):
     word = urllib.parse.quote_plus(word)
     language = language.lower()
     breis_slug = {"english": "eid", "irish": "fgb"}  # Path slug for breis
-    response = urllib.request.urlopen("http://breis.focloir.ie/en/"+breis_slug[language]+'/'+word)
+    try:
+        response = urllib.request.urlopen("http://breis.focloir.ie/en/"+breis_slug[language]+'/'+word)
+    except urllib.error.HTTPError:
+        return ['Audio Only'], ['Audio Only']
+
     html = response.read()
     soup = BeautifulSoup(html)
     entry = soup.findAll("div", class_=breis_slug[language] + " entry")
@@ -33,8 +38,12 @@ def entry_cleanup(html):
         """This function appends the text of the html to the list
         and returns it"""
         entries = []
-        for b in html:
-            entries.append(b.get_text())
+        try:
+            for b in html:
+                entries.append(b.get_text())
+        except AttributeError:
+            return html
+
         return entries
 
 

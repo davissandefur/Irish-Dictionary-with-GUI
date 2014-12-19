@@ -2,7 +2,7 @@
 # saved as qt_gui.py
 # Last edit by Davis Sandefur 16.12.2014
 
-import sys
+import sys, os
 from PyQt5 import QtCore, QtWidgets, QtGui, QtMultimedia
 from dictionary_functions import language_change
 from irish_dictionary import irish_dictionary
@@ -97,20 +97,35 @@ class Callback():
 
     @staticmethod
     def munster():
-        """ This method plays the Munster recording, if it exists"""
-        url = QtCore.QUrl.fromLocalFile("./CanM.mp3")
+            """ This method plays the Munster recording, if it exists"""
+            url = QtCore.QUrl.fromLocalFile("./CanM.mp3")
+            content = QtMultimedia.QMediaContent(url)
+            player = QtMultimedia.QMediaPlayer()
+            player.setMedia(content)
+            player.play()
+            player.stateChanged()
+            del player
+
+
+
+    @staticmethod
+    def connacht():
+        """ This method plays the Connacht recording if it exists"""
+        url = QtCore.QUrl.fromLocalFile("./CanC.mp3")
         content = QtMultimedia.QMediaContent(url)
         player = QtMultimedia.QMediaPlayer()
         player.setMedia(content)
         player.play()
 
     @staticmethod
-    def connacht():
-        """ This method plays the Connacht recording if it exists"""
-
-    @staticmethod
     def ulster():
         """ This method plays the Ulster recording, it it exists"""
+        url = QtCore.QUrl.fromLocalFile("./CanU.mp3")
+        content = QtMultimedia.QMediaContent(url)
+        player = QtMultimedia.QMediaPlayer()
+        player.setMedia(content)
+        player.play()
+        player.stateChanged()
 
 
 # Create Irish version widgets
@@ -128,6 +143,8 @@ class IrishButtons(QtWidgets.QWidget):
     """ this class creates the Irish language buttons"""
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        # Set buttons and enabled status
         self.bearla_button = QtWidgets.QPushButton("Béarla")
         self.gaeilge_button = QtWidgets.QPushButton("Gaeilge")
         self.connacht_button = QtWidgets.QPushButton("Cúige Chonnacht")
@@ -136,8 +153,13 @@ class IrishButtons(QtWidgets.QWidget):
         self.connacht_button.setEnabled(False)
         self.ulster_button.setEnabled(False)
         self.munster_button.setEnabled(False)
+
+        # Set callbacks
         self.bearla_button.clicked.connect(lambda: self.audio_english())
         self.gaeilge_button.clicked.connect(lambda: self.audio_check())
+        self.munster_button.clicked.connect(lambda: Callback.munster())
+        self.connacht_button.clicked.connect(lambda: Callback.connacht())
+        self.ulster_button.clicked.connect(lambda: Callback.ulster())
 
     def audio_english(self):
         Callback.bearla_callback()
@@ -172,19 +194,31 @@ class EnglishButtons(QtWidgets.QWidget):
     """ This class creates the English version buttons"""
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        # Define buttons
         self.english_button = QtWidgets.QPushButton("English")
         self.irish_button = QtWidgets.QPushButton("Irish")
         self.audio = False  # Initial audio setting
         self.ulster_button = QtWidgets.QPushButton("Ulster Dialect")
         self.connacht_button = QtWidgets.QPushButton("Connacht Dialect")
         self.munster_button = QtWidgets.QPushButton("Munster Dialect")
+
+        # Define Callback procedures
         self.english_button.clicked.connect(lambda: self.audio_english())
         self.irish_button.clicked.connect(lambda: self.audio_check())
+        self.munster_button.clicked.connect(lambda: Callback.munster())
+        self.connacht_button.clicked.connect(lambda: Callback.connacht())
+        self.ulster_button.clicked.connect(lambda: Callback.ulster())
+
+        # Initial disabling of audio buttons
         self.ulster_button.setEnabled(False)
         self.munster_button.setEnabled(False)
         self.connacht_button.setEnabled(False)
 
     def audio_english(self):
+        os.remove('./CanM.mp3')
+        os.remove('./CanC.mp3')
+        os.remove('./CanU.mp3')
         Callback.english_callback()
         self.ulster_button.setEnabled(False)
         self.connacht_button.setEnabled(False)
@@ -200,7 +234,6 @@ class EnglishButtons(QtWidgets.QWidget):
             self.ulster_button.setEnabled(False)
             self.connacht_button.setEnabled(False)
             self.munster_button.setEnabled(False)
-        print(self.audio)
 
 
 class Text(QtWidgets.QWidget):
@@ -297,7 +330,6 @@ class EnglishVersion(QtWidgets.QWidget):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
-
 app = QtWidgets.QApplication(sys.argv)
 irish_label = IrishLabel()
 english_label = EnglishLabel()
@@ -309,3 +341,5 @@ english_version = EnglishVersion()
 english_version.show()
 english_version.center()
 sys.exit(app.exec_())
+
+
