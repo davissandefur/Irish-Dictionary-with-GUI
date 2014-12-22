@@ -13,23 +13,31 @@ import urllib.error
 from bs4 import BeautifulSoup
 
 
-def entry_lookup(word, language):
+def entry_lookup(word, language, version):
     """ This function searches and gets the data for entry and suggestion
     from breis.focloir.ie.
     """
     word = urllib.parse.quote_plus(word)
     language = language.lower()
     breis_slug = {"english": "eid", "irish": "fgb"}  # Path slug for breis
-    try:
-        response = urllib.request.urlopen("http://breis.focloir.ie/en/"+breis_slug[language]+'/'+word)
-    except urllib.error.HTTPError:
-        return ['Audio Only'], ['Audio Only']
+
+    if version == 'english':
+        try:
+            response = urllib.request.urlopen("http://breis.focloir.ie/en/"+breis_slug[language]+'/'+word)
+        except urllib.error.HTTPError:
+            return ['Audio Only'], ['Audio Only']
+    if version == 'gaeilge':
+        try:
+            response = urllib.request.urlopen("http://breis.focloir.ie/ga/"+breis_slug[language]+'/'+word)
+        except urllib.error.HTTPError:
+            return ['Guth amháin'], ['Guth amháin']
 
     html = response.read()
     soup = BeautifulSoup(html)
     entry = soup.findAll("div", class_=breis_slug[language] + " entry")
     suggestions = soup.findAll("div", class_="suggestions")
-    return entry, suggestions
+    form_of = soup.findAll("div", class_="know")
+    return entry, suggestions, form_of
             
 
 def entry_cleanup(html):
@@ -41,7 +49,11 @@ def entry_cleanup(html):
                 entries.append(b.get_text())
         except AttributeError:
             return html
-
+        try:
+            for b in html:
+                entries.append(b.get_text())
+        except IndexError:
+            return None
         return entries
 
 
@@ -70,7 +82,7 @@ def language_change(string):
     words = string[16:]
     language_head = "Focail chosúla: "
 
-    return language_head + words
+#    return language_head + words
 
 
 if __name__ == "__main__":
