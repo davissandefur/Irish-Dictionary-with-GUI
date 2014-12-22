@@ -1,6 +1,6 @@
 # Irish Dictionary Checker Modules
 # Saved as dictionary_functions.py
-# Created by Davis Sandefur; last updated 18.12.14
+# Created by Davis Sandefur; last updated 22.12.14
 
 """This module contains all the functions needed to scrub Breis.focloir.ie,
 either in English or Irish , as well as the functions needed to parse the HTML

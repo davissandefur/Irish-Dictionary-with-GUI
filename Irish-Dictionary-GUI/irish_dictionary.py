@@ -1,6 +1,6 @@
 # Breis.focloir.ie dictionary checker
 # Saved as irish dictionary.py
-# Created by Davis Sandefur; last update 11.12.14
+# Created by Davis Sandefur; last update 22.12.14
 
 import dictionary_functions
 
