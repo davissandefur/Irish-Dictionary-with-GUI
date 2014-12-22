@@ -2,8 +2,6 @@
 # Saved as dictionary_functions.py
 # Created by Davis Sandefur; last updated 18.12.14
 
-# TODO: Sound support for Irish words if sound available on breis.focloir.ie/fuaim
-
 """This module contains all the functions needed to scrub Breis.focloir.ie,
 either in English or Irish , as well as the functions needed to parse the HTML
 and create a running word list of the words.""" 
