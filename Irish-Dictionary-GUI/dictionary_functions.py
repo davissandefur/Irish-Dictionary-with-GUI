@@ -37,7 +37,7 @@ def entry_lookup(word, language, version):
     entry = soup.findAll("div", class_=breis_slug[language] + " entry")
     suggestions = soup.findAll("div", class_="suggestions")
     form_of = soup.findAll("div", class_="know")
-    print(bool(form_of))
+    #print(bool(form_of))
     if not form_of:
         return entry, suggestions, None
     return entry, suggestions, form_of
@@ -86,7 +86,7 @@ def language_change(string):
     words = string[16:]
     language_head = "Focail chosúla: "
 
-#    return language_head + words
+    return language_head + words
 
 
 if __name__ == "__main__":
@@ -100,7 +100,7 @@ if __name__ == "__main__":
 
     # Gathering HTML about English word, reading the html to make it legibile as well as string cleanup on suggestions
 
-    entry, suggestion = entry_lookup("hello", "English") # Returns HMTL markers
+    entry, suggestion, form_of = entry_lookup("hello", "English", 'english') # Returns HMTL markers
     clean_entry = entry_cleanup(entry)  # Should return list without HTML markers
     for i in clean_entry:
         print(i)
@@ -112,11 +112,12 @@ if __name__ == "__main__":
     print()
     print(clean_string)
     print()
+    print(form_of)
     # Last test on language change. Changes "similar words" to "focail chósúla"
     print(language_change(clean_string))
 
     # Retest with Irish
-    entry, suggestion = entry_lookup("gnóthach", "irish") # Returns HMTL markers
+    entry, suggestion, form_of = entry_lookup("gnóthach", "irish", 'gaeilge') # Returns HMTL markers
     clean_entry = entry_cleanup(entry)  # Should return list without HTML markers
     for i in clean_entry:
         print(i)
@@ -128,5 +129,10 @@ if __name__ == "__main__":
     print()
     print(clean_string)
     print()
+    print(form_of)
+    print()
     # Last test on language change. Changes "similar words" to "focail chósúla"
     print(language_change(clean_string))
+
+    entry, suggestion, form_of = entry_lookup('atá', 'irish', 'gaeilge')
+    print(string_cleanup(entry_cleanup(form_of)))
