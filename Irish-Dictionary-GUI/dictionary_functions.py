@@ -37,6 +37,9 @@ def entry_lookup(word, language, version):
     entry = soup.findAll("div", class_=breis_slug[language] + " entry")
     suggestions = soup.findAll("div", class_="suggestions")
     form_of = soup.findAll("div", class_="know")
+    print(bool(form_of))
+    if not form_of:
+        return entry, suggestions, None
     return entry, suggestions, form_of
             
 
@@ -54,6 +57,7 @@ def entry_cleanup(html):
                 entries.append(b.get_text())
         except IndexError:
             return None
+
         return entries
 
 

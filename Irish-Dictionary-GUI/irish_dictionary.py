@@ -16,13 +16,15 @@ def irish_dictionary(word, language, version, wordlist=[]):
 
     # Gets the entry and suggestions
     entry, suggestion, form_of = dictionary_functions.entry_lookup(word, language, version)
-    
+    print(form_of)
     # Get entries and suggestions in a list using HTMLRead class
     entries = dictionary_functions.entry_cleanup(entry)
     suggestions = dictionary_functions.entry_cleanup(suggestion)
     suggestions = dictionary_functions.string_cleanup(suggestions)
-    form_of = dictionary_functions.entry_cleanup(form_of)
-    form_of = dictionary_functions.string_cleanup(form_of)
+
+    if form_of is not None:
+        form_of = dictionary_functions.entry_cleanup(form_of)
+        form_of = dictionary_functions.string_cleanup(form_of)
     wordlist = dictionary_functions.word_store(word, wordlist)
 
     return entries, suggestions, wordlist, form_of
