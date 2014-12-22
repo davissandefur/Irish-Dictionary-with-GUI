@@ -2,9 +2,9 @@
 # saved as qt_gui.py
 # Last edit by Davis Sandefur 21.12.2014
 
-import sys, os
+import sys
+import os
 from PyQt5 import QtCore, QtWidgets, QtGui, QtMultimedia
-from dictionary_functions import language_change
 from irish_dictionary import irish_dictionary
 from audio_grabber import entry_search, related_matches
 
@@ -16,11 +16,13 @@ class Callback():
     def bearla_callback():
         """ Irish version English-language search """
         entry = str(irish_version.entry.text()).lower()
-        entries, suggestions, wordlist = irish_dictionary(entry, 'English')
+        entries, suggestions, wordlist, grammatical = irish_dictionary(entry, 'English', 'gaeilge')
+        if grammatical is not None:
+            irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
+            irish_version.text_entry.insertPlainText(grammatical + '\n\n')
         for i in entries:
             irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
             irish_version.text_entry.insertPlainText(i + '\n\n')
-        suggestions = language_change(suggestions)
         irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
         irish_version.text_entry.insertPlainText(suggestions + "\n\nNa focail is déanaí: " + str(wordlist) +
                                                  "\n\n" + 'Níl aon fuaim ar fhocail as Béarla.\n\n')
@@ -30,12 +32,14 @@ class Callback():
     def gaeilge_callback():
         """ Irish version Irish-language search """
         entry = str(irish_version.entry.text()).lower()
-        entries, suggestions, wordlist = irish_dictionary(entry, 'Irish')
+        entries, suggestions, wordlist, grammatical = irish_dictionary(entry, 'Irish', 'gaeilge')
         related = related_matches(entry)
+        if grammatical is not None:
+            irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
+            irish_version.text_entry.insertPlainText(grammatical + '\n\n')
         for i in entries:
             irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
             irish_version.text_entry.insertPlainText(i + '\n\n')
-        suggestions = language_change(suggestions)
         irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
         irish_version.text_entry.insertPlainText(suggestions + "\n\nNa focail is déanaí: " + str(wordlist) + "\n\n"
                                                  + '(Fuaim) Torthaí gaolmhara: ' + str(related) + '\n\n')
@@ -47,7 +51,10 @@ class Callback():
     def english_callback():
         """ English version English-language search """
         entry = str(english_version.entry.text()).lower()
-        entries, suggestions, wordlist = irish_dictionary(entry, 'English')
+        entries, suggestions, wordlist, grammatical = irish_dictionary(entry, 'English', 'english')
+        if grammatical is not None:
+            irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
+            irish_version.text_entry.insertPlainText(grammatical + '\n\n')
         for i in entries:
             english_version.text_entry.moveCursor(QtGui.QTextCursor.End)
             english_version.text_entry.insertPlainText(i + '\n\n')
@@ -60,8 +67,11 @@ class Callback():
     def irish_callback():
         """ This method is the English version Irish-language search """
         entry = str(english_version.entry.text()).lower()
-        entries, suggestions, wordlist = irish_dictionary(entry, 'Irish')
+        entries, suggestions, wordlist, grammatical = irish_dictionary(entry, 'Irish', 'english')
         related = related_matches(entry)
+        if grammatical is not None:
+            irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
+            irish_version.text_entry.insertPlainText(grammatical + '\n\n')
         for i in entries:
             english_version.text_entry.moveCursor(QtGui.QTextCursor.End)
             english_version.text_entry.insertPlainText(i + '\n\n')
