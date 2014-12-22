@@ -1,7 +1,7 @@
 # This module will download the audio from breis.focloir.ie/fuaim if it exists
 # if not, it will return related matches to search, if they exist.
 # Saved as audio_catcher.py
-# Created by Davis Sandefur; last updated 16.12.14
+# Created by Davis Sandefur; last updated 21.12.14
 
 """ This module contains the code necessary to download the sound files for a particular word from breis.focloir.ie,
 assuming the files exist. It also returns related matches, if they exist. If there is no sound, it returns any related
@@ -20,12 +20,12 @@ def entry_search(word):
     """
 
     word = urllib.parse.quote_plus(word)
-
-    for i in range(len(word)):
-        if word[i] == "+":
-            begin_word = word[:i]
-            end_word = word[i+1:]
-            word = begin_word + '%20' + end_word
+    if "+" in word:
+        for i in range(len(word) + 1):
+            if word[i] == "+":
+                begin_word = word[:i]
+                end_word = word[i+1:]
+                word = begin_word + '%20' + end_word
 
     # print(word)  # Test to make sure word is in correct form for URL
 
@@ -65,6 +65,8 @@ def related_matches(word):
 if __name__ == '__main__':
     print(entry_search('téigh'))
     print(entry_search('seo a chuaigh thart'))
+    print(entry_search(('téigh in éag diaidh ar ndiaidh')))
     print(entry_search('hello'))
     print(related_matches('téigh'))
     print(related_matches('seo a chuaigh thart'))
+    print(related_matches('téigh in éag diaidh ar ndiaidh'))
