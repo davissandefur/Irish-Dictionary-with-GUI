@@ -1,15 +1,12 @@
 # Irish Dictionary GUI app
 # saved as qt_gui.py
-# Last edit by Davis Sandefur 18.12.2014
+# Last edit by Davis Sandefur 21.12.2014
 
 import sys, os
 from PyQt5 import QtCore, QtWidgets, QtGui, QtMultimedia
 from dictionary_functions import language_change
 from irish_dictionary import irish_dictionary
 from audio_grabber import entry_search, related_matches
-
-# TODO: Implement sound support for words that have it.
-# TODO: Figure out what the is going on with QtMultimedia and get it to play.
 
 
 class Callback():
@@ -103,10 +100,7 @@ class Callback():
             player = QtMultimedia.QMediaPlayer()
             player.setMedia(content)
             player.play()
-            player.stateChanged()
-            del player
-
-
+            player.stateChanged.connect(lambda: player.disconnect())
 
     @staticmethod
     def connacht():
@@ -116,6 +110,7 @@ class Callback():
         player = QtMultimedia.QMediaPlayer()
         player.setMedia(content)
         player.play()
+        player.stateChanged.connect(lambda: player.disconnect())
 
     @staticmethod
     def ulster():
@@ -125,7 +120,7 @@ class Callback():
         player = QtMultimedia.QMediaPlayer()
         player.setMedia(content)
         player.play()
-        player.stateChanged()
+        player.stateChanged.connect(lambda: player.disconnect())
 
 
 # Create Irish version widgets
@@ -329,6 +324,7 @@ class EnglishVersion(QtWidgets.QWidget):
         cp = QtWidgets.QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
+
 
 app = QtWidgets.QApplication(sys.argv)
 irish_label = IrishLabel()
