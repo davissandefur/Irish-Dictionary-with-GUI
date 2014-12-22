@@ -25,12 +25,12 @@ def entry_lookup(word, language, version):
         try:
             response = urllib.request.urlopen("http://breis.focloir.ie/en/"+breis_slug[language]+'/'+word)
         except urllib.error.HTTPError:
-            return ['Audio Only'], ['Audio Only']
+            return ['Audio Only'], ['Audio Only'], None
     if version == 'gaeilge':
         try:
             response = urllib.request.urlopen("http://breis.focloir.ie/ga/"+breis_slug[language]+'/'+word)
         except urllib.error.HTTPError:
-            return ['Guth amháin'], ['Guth amháin']
+            return ['Guth amháin'], ['Guth amháin'], None
 
     html = response.read()
     soup = BeautifulSoup(html)
