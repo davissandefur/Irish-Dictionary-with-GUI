@@ -53,8 +53,8 @@ class Callback():
         entry = str(english_version.entry.text()).lower()
         entries, suggestions, wordlist, grammatical = irish_dictionary(entry, 'English', 'english')
         if grammatical is not None:
-            irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
-            irish_version.text_entry.insertPlainText(grammatical + '\n\n')
+            english_version.text_entry.moveCursor(QtGui.QTextCursor.End)
+            english_version.text_entry.insertPlainText(grammatical + '\n\n')
         for i in entries:
             english_version.text_entry.moveCursor(QtGui.QTextCursor.End)
             english_version.text_entry.insertPlainText(i + '\n\n')
@@ -70,8 +70,8 @@ class Callback():
         entries, suggestions, wordlist, grammatical = irish_dictionary(entry, 'Irish', 'english')
         related = related_matches(entry)
         if grammatical is not None:
-            irish_version.text_entry.moveCursor(QtGui.QTextCursor.End)
-            irish_version.text_entry.insertPlainText(grammatical + '\n\n')
+            english_version.text_entry.moveCursor(QtGui.QTextCursor.End)
+            english_version.text_entry.insertPlainText(grammatical + '\n\n')
         for i in entries:
             english_version.text_entry.moveCursor(QtGui.QTextCursor.End)
             english_version.text_entry.insertPlainText(i + '\n\n')
@@ -336,16 +336,26 @@ class EnglishVersion(QtWidgets.QWidget):
         self.move(qr.topLeft())
 
 
-app = QtWidgets.QApplication(sys.argv)
-irish_label = IrishLabel()
-english_label = EnglishLabel()
-irish_buttons = IrishButtons()
-english_buttons = EnglishButtons()
-text = Text()
-irish_version = IrishVersion()
-english_version = EnglishVersion()
-english_version.show()
-english_version.center()
-sys.exit(app.exec_())
+def main():
+    global app
+    app = QtWidgets.QApplication(sys.argv)
+    global irish_label
+    irish_label = IrishLabel()
+    global english_label
+    english_label = EnglishLabel()
+    global irish_buttons
+    irish_buttons = IrishButtons()
+    global english_buttons
+    english_buttons = EnglishButtons()
+    global text
+    text = Text()
+    global irish_version
+    irish_version = IrishVersion()
+    global english_version
+    english_version = EnglishVersion()
+    english_version.show()
+    english_version.center()
+    sys.exit(app.exec_())
 
-
+if __name__ == '__main__':
+    main()
