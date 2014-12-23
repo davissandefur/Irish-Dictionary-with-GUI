@@ -3,7 +3,6 @@
 # Last edit by Davis Sandefur 22.12.2014
 
 import sys
-import os
 from PyQt5 import QtCore, QtWidgets, QtGui, QtMultimedia
 from irish_dictionary import irish_dictionary
 from audio_grabber import entry_search, related_matches
