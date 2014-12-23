@@ -221,9 +221,6 @@ class EnglishButtons(QtWidgets.QWidget):
         self.connacht_button.setEnabled(False)
 
     def audio_english(self):
-        os.remove('./CanM.mp3')
-        os.remove('./CanC.mp3')
-        os.remove('./CanU.mp3')
         Callback.english_callback()
         self.ulster_button.setEnabled(False)
         self.connacht_button.setEnabled(False)
