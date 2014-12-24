@@ -56,6 +56,8 @@ def entry_cleanup(html):
                     entries.append(b.get_text())
             except IndexError:
                 return None
+            except AttributeError:
+                return html
             return html
         return entries
 
