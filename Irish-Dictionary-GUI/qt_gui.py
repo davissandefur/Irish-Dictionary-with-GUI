@@ -8,6 +8,15 @@ from irish_dictionary import irish_dictionary
 from audio_grabber import entry_search, related_matches
 
 
+# Create the widgets used by both versions
+class Text(QtWidgets.QWidget):
+    """ This class creates the text widget"""
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.text_entry = QtWidgets.QTextEdit(parent)
+        self.text_entry.setReadOnly(True)
+
+
 # Create Irish version widgets
 class IrishLabel(QtWidgets.QWidget):
     def __init__(self, parent=None):
@@ -129,6 +138,39 @@ class IrishButtons(IrishLabel):
         player.setMedia(content)
         player.play()
         player.stateChanged.connect(lambda: player.disconnect())
+
+
+class IrishVersion(IrishButtons, Text):
+    """ This class brings together all the Irish version widgets and
+    lays them out in the correct order. Also controls window title and maximize button
+    """
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        grid = QtWidgets.QGridLayout()
+        grid.setSpacing(5)
+
+        grid.addWidget(self.irish_label, 0, 0)
+        grid.addWidget(self.irish_entry, 0, 1, 1, 4)
+        grid.addWidget(self.english_language_button, 0, 6)
+        grid.addWidget(self.bearla_button, 1, 2)
+        grid.addWidget(self.gaeilge_button, 1, 4)
+        grid.addWidget(self.ulster_button, 2, 2)
+        grid.addWidget(self.connacht_button, 2, 3)
+        grid.addWidget(self.munster_button, 2, 4)
+        self.setLayout(grid)
+
+        self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
+        self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
+
+        self.setWindowTitle("Foclóir")
+        self.resize(200, 400)
+
+    def center(self):
+
+        qr = self.frameGeometry()
+        cp = QtWidgets.QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
 
 # Create English version widgets
@@ -259,48 +301,6 @@ class EnglishButtons(EnglishLabel):
         player.stateChanged.connect(lambda: player.disconnect())
 
 
-class Text(QtWidgets.QWidget):
-    """ This class creates the text widget"""
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.text_entry = QtWidgets.QTextEdit(parent)
-        self.text_entry.setReadOnly(True)
-
-
-class IrishVersion(IrishButtons, Text):
-    """ This class brings together all the Irish version widgets and
-    lays them out in the correct order. Also controls window title and maximize button
-    """
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        super().__init__(parent)
-        grid = QtWidgets.QGridLayout()
-        grid.setSpacing(5)
-
-        grid.addWidget(self.irish_label, 0, 0)
-        grid.addWidget(self.irish_entry, 0, 1, 1, 4)
-        grid.addWidget(self.english_language_button, 0, 6)
-        grid.addWidget(self.bearla_button, 1, 2)
-        grid.addWidget(self.gaeilge_button, 1, 4)
-        grid.addWidget(self.ulster_button, 2, 2)
-        grid.addWidget(self.connacht_button, 2, 3)
-        grid.addWidget(self.munster_button, 2, 4)
-        self.setLayout(grid)
-
-        self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
-        self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
-
-        self.setWindowTitle("Foclóir")
-        self.resize(200, 400)
-
-    def center(self):
-
-        qr = self.frameGeometry()
-        cp = QtWidgets.QDesktopWidget().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
-
-
 class EnglishVersion(EnglishButtons, Text):
     """ This class brings together all the English version widgets and lays them out in the correct
     order. Also controls the English version window title and disables the maximize button
@@ -334,8 +334,8 @@ class EnglishVersion(EnglishButtons, Text):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
+
 def main():
-    global app
     app = QtWidgets.QApplication(sys.argv)
     global english_version
     english_version = EnglishVersion()
