@@ -54,20 +54,14 @@ class IrishButtons(IrishLabel):
         self.munster_button.setEnabled(False)
 
         # Set callbacks
-        self.bearla_button.clicked.connect(lambda: self.audio_english())
-        self.gaeilge_button.clicked.connect(lambda: self.audio_check())
-        self.munster_button.clicked.connect(lambda: self.munster())
-        self.connacht_button.clicked.connect(lambda: self.connacht())
-        self.ulster_button.clicked.connect(lambda: self.ulster())
+        self.bearla_button.clicked.connect(lambda: self.audio_check('English'))
+        self.gaeilge_button.clicked.connect(lambda: self.audio_check('Irish'))
+        self.munster_button.clicked.connect(lambda: self.play_audio('Munster'))
+        self.connacht_button.clicked.connect(lambda: self.play_audio('Connacht'))
+        self.ulster_button.clicked.connect(lambda: self.play_audio('Ulster'))
 
-    def audio_english(self):
-        self.bearla_callback()
-        self.ulster_button.setEnabled(False)
-        self.connacht_button.setEnabled(False)
-        self.munster_button.setEnabled(False)
-
-    def audio_check(self):
-        audio = self.gaeilge_callback()
+    def audio_check(self, language):
+        audio = self.callback(language)
         if audio:
             self.ulster_button.setEnabled(True)
             self.connacht_button.setEnabled(True)
@@ -77,10 +71,10 @@ class IrishButtons(IrishLabel):
             self.connacht_button.setEnabled(False)
             self.munster_button.setEnabled(False)
 
-    def bearla_callback(self):
+    def callback(self, language):
         """ Irish version English-language search """
         entry = str(self.irish_entry.text()).lower()
-        entries, suggestions, wordlist, grammatical = irish_dictionary(entry, 'English', 'gaeilge')
+        entries, suggestions, wordlist, grammatical = irish_dictionary(entry, language, 'gaeilge')
         if grammatical is not None:
             self.text_entry.moveCursor(QtGui.QTextCursor.End)
             self.text_entry.insertPlainText(grammatical + '\n\n')
@@ -91,48 +85,12 @@ class IrishButtons(IrishLabel):
         self.text_entry.insertPlainText(suggestions + "\n\nNa focail is déanaí: " + str(wordlist) +
                                         "\n\n" + 'Níl aon fuaim ar fhocail as Béarla.\n\n')
         self.text_entry.moveCursor(QtGui.QTextCursor.End)
-
-    def gaeilge_callback(self):
-        """ Irish version Irish-language search """
-        entry = str(self.irish_entry.text()).lower()
-        entries, suggestions, wordlist, grammatical = irish_dictionary(entry, 'Irish', 'gaeilge')
-        related = related_matches(entry)
-        if grammatical is not None:
-            self.text_entry.moveCursor(QtGui.QTextCursor.End)
-            self.text_entry.insertPlainText(grammatical + '\n\n')
-        for i in entries:
-            self.text_entry.moveCursor(QtGui.QTextCursor.End)
-            self.text_entry.insertPlainText(i + '\n\n')
-        self.text_entry.moveCursor(QtGui.QTextCursor.End)
-        self.text_entry.insertPlainText(suggestions + "\n\nNa focail is déanaí: " + str(wordlist) + "\n\n"
-                                        + '(Fuaim) Torthaí gaolmhara: ' + str(related) + '\n\n')
-        self.text_entry.moveCursor(QtGui.QTextCursor.End)
         return entry_search(entry)
 
     @staticmethod
-    def munster():
-            """ This method plays the Munster recording, if it exists"""
-            url = QtCore.QUrl.fromLocalFile("./CanM.mp3")
-            content = QtMultimedia.QMediaContent(url)
-            player = QtMultimedia.QMediaPlayer()
-            player.setMedia(content)
-            player.play()
-            player.stateChanged.connect(lambda: player.disconnect())
-
-    @staticmethod
-    def connacht():
-        """ This method plays the Connacht recording if it exists"""
-        url = QtCore.QUrl.fromLocalFile("./CanC.mp3")
-        content = QtMultimedia.QMediaContent(url)
-        player = QtMultimedia.QMediaPlayer()
-        player.setMedia(content)
-        player.play()
-        player.stateChanged.connect(lambda: player.disconnect())
-
-    @staticmethod
-    def ulster():
-        """ This method plays the Ulster recording, it it exists"""
-        url = QtCore.QUrl.fromLocalFile("./CanU.mp3")
+    def play_audio(dialect):
+        file_names = {'Munster': './CanM.mp3', 'Connacht': './CanC.mp3', 'Ulster': './CanU.mp3'}
+        url = QtCore.QUrl.fromLocalFile(file_names[dialect])
         content = QtMultimedia.QMediaContent(url)
         player = QtMultimedia.QMediaPlayer()
         player.setMedia(content)
@@ -210,25 +168,23 @@ class EnglishButtons(EnglishLabel):
         self.munster_button = QtWidgets.QPushButton("Munster Dialect")
 
         # Define Callback procedures
-        self.english_button.clicked.connect(lambda: self.audio_english())
-        self.irish_button.clicked.connect(lambda: self.audio_check())
-        self.munster_button.clicked.connect(lambda: self.munster())
-        self.connacht_button.clicked.connect(lambda: self.connacht())
-        self.ulster_button.clicked.connect(lambda: self.ulster())
+        self.english_button.clicked.connect(lambda: self.audio_check("English"))
+        self.irish_button.clicked.connect(lambda: self.audio_check('Irish'))
+        self.munster_button.clicked.connect(lambda: self.play_audio('Munster'))
+        self.connacht_button.clicked.connect(lambda: self.play_audio('Connacht'))
+        self.ulster_button.clicked.connect(lambda: self.play_audio('Ulster'))
 
         # Initial disabling of audio buttons
         self.ulster_button.setEnabled(False)
         self.munster_button.setEnabled(False)
         self.connacht_button.setEnabled(False)
 
-    def audio_english(self):
-        self.english_callback()
-        self.ulster_button.setEnabled(False)
-        self.connacht_button.setEnabled(False)
-        self.munster_button.setEnabled(False)
-
-    def audio_check(self):
-        self.audio = self.irish_callback()
+    def audio_check(self, language):
+        """ Runs callback which prints all entries, suggestions, grammatical forms, etc. Callback also determines if
+        an audio recording exists for the word in <language>. If it doesn't, it disables audio buttons. If audio exists,
+        it enables buttons.
+        """
+        self.audio = self.callback(language)
         if self.audio:
             self.ulster_button.setEnabled(True)
             self.connacht_button.setEnabled(True)
@@ -238,10 +194,11 @@ class EnglishButtons(EnglishLabel):
             self.connacht_button.setEnabled(False)
             self.munster_button.setEnabled(False)
 
-    def english_callback(self):
-        """ English version English-language search """
+    def callback(self, language):
+        """ Callback function that prints entries, suggestions, etc. and returns a boolean for whether the word(s)
+         contain(s) audio."""
         entry = str(self.english_entry.text()).lower()
-        entries, suggestions, wordlist, grammatical = irish_dictionary(entry, 'English', 'english')
+        entries, suggestions, wordlist, grammatical = irish_dictionary(entry, language, 'english')
         if grammatical is not None:
             self.text_entry.moveCursor(QtGui.QTextCursor.End)
             self.text_entry.insertPlainText(grammatical + '\n\n')
@@ -252,48 +209,12 @@ class EnglishButtons(EnglishLabel):
         self.text_entry.insertPlainText(suggestions + "\n\nRecently used words: " + str(wordlist) +
                                         "\n\n" + 'No audio for English words.\n\n')
         self.text_entry.moveCursor(QtGui.QTextCursor.End)
-
-    def irish_callback(self):
-        """ This method is the English version Irish-language search """
-        entry = str(self.english_entry.text()).lower()
-        entries, suggestions, wordlist, grammatical = irish_dictionary(entry, 'Irish', 'english')
-        related = related_matches(entry)
-        if grammatical is not None:
-            self.text_entry.moveCursor(QtGui.QTextCursor.End)
-            self.text_entry.insertPlainText(grammatical + '\n\n')
-        for i in entries:
-            self.text_entry.moveCursor(QtGui.QTextCursor.End)
-            self.text_entry.insertPlainText(i + '\n\n')
-        self.text_entry.moveCursor(QtGui.QTextCursor.End)
-        self.text_entry.insertPlainText(suggestions + "\n\nRecently used words: " + str(wordlist) + "\n\n"
-                                                   + '(Audio) Related Matches: ' + str(related) + '\n\n')
-        self.text_entry.moveCursor(QtGui.QTextCursor.End)
         return entry_search(entry)
 
     @staticmethod
-    def munster():
-            """ This method plays the Munster recording, if it exists"""
-            url = QtCore.QUrl.fromLocalFile("./CanM.mp3")
-            content = QtMultimedia.QMediaContent(url)
-            player = QtMultimedia.QMediaPlayer()
-            player.setMedia(content)
-            player.play()
-            player.stateChanged.connect(lambda: player.disconnect())
-
-    @staticmethod
-    def connacht():
-        """ This method plays the Connacht recording if it exists"""
-        url = QtCore.QUrl.fromLocalFile("./CanC.mp3")
-        content = QtMultimedia.QMediaContent(url)
-        player = QtMultimedia.QMediaPlayer()
-        player.setMedia(content)
-        player.play()
-        player.stateChanged.connect(lambda: player.disconnect())
-
-    @staticmethod
-    def ulster():
-        """ This method plays the Ulster recording, it it exists"""
-        url = QtCore.QUrl.fromLocalFile("./CanU.mp3")
+    def play_audio(dialect):
+        file_names = {'Munster': './CanM.mp3', 'Connacht': './CanC.mp3', 'Ulster': './CanU.mp3'}
+        url = QtCore.QUrl.fromLocalFile(file_names[dialect])
         content = QtMultimedia.QMediaContent(url)
         player = QtMultimedia.QMediaPlayer()
         player.setMedia(content)
