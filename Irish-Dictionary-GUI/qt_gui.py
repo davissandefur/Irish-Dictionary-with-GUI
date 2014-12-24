@@ -75,6 +75,11 @@ class IrishButtons(IrishLabel):
         """ Irish version English-language search """
         entry = str(self.irish_entry.text()).lower()
         entries, suggestions, wordlist, grammatical = irish_dictionary(entry, language, 'gaeilge')
+        audio_exists = entry_search(entry)
+        if audio_exists:
+            related = related_matches(entry)
+        else:
+            related = 'Tada'
         if grammatical is not None:
             self.text_entry.moveCursor(QtGui.QTextCursor.End)
             self.text_entry.insertPlainText(grammatical + '\n\n')
@@ -83,9 +88,9 @@ class IrishButtons(IrishLabel):
             self.text_entry.insertPlainText(i + '\n\n')
         self.text_entry.moveCursor(QtGui.QTextCursor.End)
         self.text_entry.insertPlainText(suggestions + "\n\nNa focail is déanaí: " + str(wordlist) +
-                                        "\n\n" + 'Níl aon fuaim ar fhocail as Béarla.\n\n')
+                                        "\n\n" + '(Fuaim) Torthaí gaolmhara:' + str(related) + '\n\n')
         self.text_entry.moveCursor(QtGui.QTextCursor.End)
-        return entry_search(entry)
+        return audio_exists
 
     @staticmethod
     def play_audio(dialect):
@@ -199,6 +204,11 @@ class EnglishButtons(EnglishLabel):
          contain(s) audio."""
         entry = str(self.english_entry.text()).lower()
         entries, suggestions, wordlist, grammatical = irish_dictionary(entry, language, 'english')
+        audio_exists = entry_search(entry)
+        if audio_exists:
+            related = related_matches(entry)
+        else:
+            related = 'None'
         if grammatical is not None:
             self.text_entry.moveCursor(QtGui.QTextCursor.End)
             self.text_entry.insertPlainText(grammatical + '\n\n')
@@ -207,9 +217,9 @@ class EnglishButtons(EnglishLabel):
             self.text_entry.insertPlainText(i + '\n\n')
         self.text_entry.moveCursor(QtGui.QTextCursor.End)
         self.text_entry.insertPlainText(suggestions + "\n\nRecently used words: " + str(wordlist) +
-                                        "\n\n" + 'No audio for English words.\n\n')
+                                        "\n\n" + 'Related Audio Matches: ' + str(related) + '\n\n')
         self.text_entry.moveCursor(QtGui.QTextCursor.End)
-        return entry_search(entry)
+        return audio_exists
 
     @staticmethod
     def play_audio(dialect):
