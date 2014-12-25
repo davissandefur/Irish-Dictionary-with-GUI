@@ -79,7 +79,7 @@ class IrishButtons(IrishLabel):
         if audio_exists:
             related = related_matches(entry)
         else:
-            related = 'Tada'
+            related = 'Níl aon rud ann'
         if grammatical is not None:
             self.text_entry.moveCursor(QtGui.QTextCursor.End)
             self.text_entry.insertPlainText(grammatical + '\n\n')
