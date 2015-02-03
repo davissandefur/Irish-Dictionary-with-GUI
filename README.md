@@ -2,8 +2,14 @@ Irish-Dictionary-with-GUI
 =========================
 
 This includes a modified version of Irish Dictionary, as well as a GUI to use everything with. It opens up a bare-bones
-GUI (nothing pretty here) and allows users to input a word, then click whether it's an Irish word or an English word.
+GUI and allows users to input a word, then click whether it's an Irish word or an English word.
 It then gets the HTML for the entry and returns the entry, suggestions, and a list of recently used words (max 5) to
 the user. 
 
-The option of language is also included, and the user can switch between Irish and English versions. Sound support is being worked on, if breis.focloir.ie contains the word.
+The option to switch between an English interface and an Irish interface is included, though it does not remember the choice and defaults to English, under the assumption mostly learners will be using this. Sound support is also included. If the word contains a sound file on breis.focloir.ie, the files (one for each dialect) will be downloaded and can be played with a click of the button. Since the similar words that have audio aren't necessarily the same as the similar entries, these will also be displayed.
+
+If the word is considered a grammatical form of something, such as *atá* is a form of *bí*, it also denotes that, allowing it to be easier to find plurals and genitives, as well as verb forms that might be unfamiliar to the user.
+
+
+
+Currently working on: None; please submit ideas or suggestions to davis.sandefur@gmail.com
