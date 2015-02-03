@@ -21,7 +21,7 @@ def irish_dictionary(word, language, version, wordlist=[]):
     suggestions = dictionary_functions.entry_cleanup(suggestion)
     suggestions = dictionary_functions.string_cleanup(suggestions)
 
-    if form_of is not None:
+    if form_of is not None:  # If it exists
         form_of = dictionary_functions.entry_cleanup(form_of)
         form_of = dictionary_functions.string_cleanup(form_of)
     wordlist = dictionary_functions.word_store(word, wordlist)

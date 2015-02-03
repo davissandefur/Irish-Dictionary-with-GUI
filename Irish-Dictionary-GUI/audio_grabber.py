@@ -15,8 +15,8 @@ import urllib.parse
 
 
 def entry_search(word):
-    """ This function downloads sound for the string <word> if it exists.  If word exists, it also returns TRUE. If words
-    don't exist, it returns FALSE
+    """ This function downloads sound for the string <word> if it exists.  If sound exists, it also returns TRUE. If sound
+    doesn't exist, it returns FALSE
     """
 
     word = urllib.parse.quote_plus(word)

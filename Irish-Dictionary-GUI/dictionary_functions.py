@@ -99,9 +99,9 @@ if __name__ == "__main__":
             word_list = word_store("goodbye", word_store_test)  # Change word to see if it removed correctly
         print(word_store_test)
 
-    # Gathering HTML about English word, reading the html to make it legibile as well as string cleanup on suggestions
+    # Gathering HTML about English word, reading the html to make it legible as well as string cleanup on suggestions
 
-    entry, suggestion, form_of = entry_lookup("hello", "English", 'english') # Returns HMTL markers
+    entry, suggestion, form_of = entry_lookup("hello", "English", 'english')  # Returns HTML markers
     clean_entry = entry_cleanup(entry)  # Should return list without HTML markers
     for i in clean_entry:
         print(i)
