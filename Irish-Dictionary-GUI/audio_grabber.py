@@ -31,7 +31,7 @@ def entry_search(word):
 
     slug_list = ['CanM', 'CanC', 'CanU']
     for i in slug_list:
-        url = 'http://breis.focloir.ie/' + i + '%2F' + word + '.mp3'
+        url = 'http://teanglann.ie/' + i + '%2F' + word + '.mp3'
         # print(url)  # Test to check URL
         try:
             urllib.request.urlretrieve(url, i+'.mp3')
@@ -52,7 +52,7 @@ def related_matches(word):
             begin_word = word[:i]
             end_word = word[i+1:]
             word = begin_word + '_' + end_word
-    response = urllib.request.urlopen('http://breis.focloir.ie/en/fuaim/'+word)
+    response = urllib.request.urlopen('http://teanglann.ie/en/fuaim/'+word)
     html = response.read()
     soup = BeautifulSoup(html)
     entry = soup.findAll('div', class_='partial')  # HTML of the entries

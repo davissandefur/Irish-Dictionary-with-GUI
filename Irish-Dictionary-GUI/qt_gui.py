@@ -255,7 +255,7 @@ class EnglishVersion(EnglishButtons, Text):
         self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
         self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
 
-        self.setWindowTitle("Breis.focloir.ie Searcher")
+        self.setWindowTitle("teanglann.ie Searcher")
         self.resize(200, 400)
 
     def center(self):
