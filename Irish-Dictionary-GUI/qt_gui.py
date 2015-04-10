@@ -2,7 +2,7 @@
 # saved as qt_gui.py
 # Last edit by Davis Sandefur 24.12.2014
 
-import sys
+import sys, os
 from PyQt5 import QtCore, QtWidgets, QtGui, QtMultimedia
 from irish_dictionary import irish_dictionary
 from audio_grabber import entry_search, related_matches
@@ -95,7 +95,7 @@ class IrishButtons(IrishLabel):
     @staticmethod
     def play_audio(dialect):
         file_names = {'Munster': './CanM.mp3', 'Connacht': './CanC.mp3', 'Ulster': './CanU.mp3'}
-        url = QtCore.QUrl.fromLocalFile(file_names[dialect])
+        url = QtCore.QUrl.fromLocalFile(os.path.abspath(file_names[dialect]))
         content = QtMultimedia.QMediaContent(url)
         player = QtMultimedia.QMediaPlayer()
         player.setMedia(content)
@@ -224,7 +224,7 @@ class EnglishButtons(EnglishLabel):
     @staticmethod
     def play_audio(dialect):
         file_names = {'Munster': './CanM.mp3', 'Connacht': './CanC.mp3', 'Ulster': './CanU.mp3'}
-        url = QtCore.QUrl.fromLocalFile(file_names[dialect])
+        url = QtCore.QUrl.fromLocalFile(os.path.abspath(file_names[dialect]))
         content = QtMultimedia.QMediaContent(url)
         player = QtMultimedia.QMediaPlayer()
         player.setMedia(content)
