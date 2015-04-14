@@ -2,7 +2,7 @@
 # Saved as dictionary_functions.py
 # Created by Davis Sandefur; last updated 22.12.14
 
-"""This module contains all the functions needed to scrub Breis.focloir.ie,
+"""This module contains all the functions needed to scrub teanglann.ie,
 either in English or Irish , as well as the functions needed to parse the HTML
 and create a running word list of the words.""" 
 
@@ -15,11 +15,11 @@ from bs4 import BeautifulSoup
 
 def entry_lookup(word, language, version):
     """ This function searches and gets the data for entry and suggestion
-    from breis.focloir.ie.
+    from teanglann.ie.
     """
     word = urllib.parse.quote_plus(word)
     language = language.lower()
-    breis_slug = {"english": "eid", "irish": "fgb"}  # Path slug for breis
+    breis_slug = {"english": "eid", "irish": "fgb"}  # Path slug for teanglann
 
     if version == 'english':
         try:
@@ -44,8 +44,7 @@ def entry_lookup(word, language, version):
             
 
 def entry_cleanup(html):
-        """This function appends the text of the html to the list
-        and returns it"""
+        """This function appends the text of the html to the list and returns it"""
         entries = []
         try:
             for b in html:
@@ -73,7 +72,7 @@ def word_store(word, wordlist):
 
 
 def string_cleanup(string):
-    """ This function takes a string with excess whitespace and cleans it upN
+    """ This function takes a string with excess whitespace and cleans it up
     """
     suggestions = str(string[0])
     suggestions = ' '.join(suggestions.split())

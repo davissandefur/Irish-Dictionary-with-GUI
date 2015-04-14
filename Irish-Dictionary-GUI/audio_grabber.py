@@ -1,9 +1,9 @@
-# This module will download the audio from breis.focloir.ie/fuaim if it exists
+# This module will download the audio from teanglannie/fuaim if it exists
 # if not, it will return related matches to search, if they exist.
 # Saved as audio_catcher.py
 # Created by Davis Sandefur; last updated 21.12.14
 
-""" This module contains the code necessary to download the sound files for a particular word from breis.focloir.ie,
+""" This module contains the code necessary to download the sound files for a particular word from teanglann.ie,
 assuming the files exist. It also returns related matches, if they exist. If there is no sound, it returns any related
 matches. If neither, it returns None
 """
@@ -16,7 +16,7 @@ import urllib.parse
 
 def entry_search(word):
     """ This function downloads sound for the string <word> if it exists.  If sound exists, it also returns TRUE. If sound
-    doesn't exist, it returns FALSE
+    doesn't exist, it returns FALSE, which will be used by the GUI to enable/disable the audio buttons.
     """
 
     word = urllib.parse.quote_plus(word)
@@ -42,7 +42,7 @@ def entry_search(word):
 
 
 def related_matches(word):
-    """ This function returns the related matches of a string (word) as given by breis.focloir.ie/en/fuaim/<word>. It
+    """ This function returns the related matches of a string (word) as given by teanglann.ie/en/fuaim/<word>. It
     returns them in list form, with nothing but spaces and the text.
     """
 
@@ -58,7 +58,7 @@ def related_matches(word):
     entry = soup.findAll('div', class_='partial')  # HTML of the entries
     entries = []
     for i in entry:
-        entries.append(i.get_text()[:-2])
+        entries.append(i.get_text()[:-2])  # [:-2] to remove separate used by the website, since it's not needed
     return entries
 
 

@@ -1,4 +1,4 @@
-# Breis.focloir.ie dictionary checker
+# teanglann.ie dictionary checker
 # Saved as irish dictionary.py
 # Created by Davis Sandefur; last update 22.12.14
 
@@ -10,7 +10,7 @@ suggestions in list format, ready to be read off"""
 
 
 def irish_dictionary(word, language, version, wordlist=[]):
-    """ This function checks breis.focloir.ie for a word, Irish or English, and
+    """ This function checks teanglann.ie for a word, Irish or English, and
     returns the word and related words. If no word exists, it returns similar
     words as given by the website.  """
 
