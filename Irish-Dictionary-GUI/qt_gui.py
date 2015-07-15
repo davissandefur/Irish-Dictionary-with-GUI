@@ -99,7 +99,7 @@ class IrishButtons(IrishLabel):
         if appdata:
             url = QtCore.QUrl.fromLocalFile(os.path.abspath(os.path.join(appdata, file_names[dialect])))
         else:
-            url = QtCore.QUrl.fromLocalFile(os.path.join("./", file_names[dialect]))
+            url = QtCore.QUrl.fromLocalFile(os.path.abspath(os.path.join("./", file_names[dialect])))
         content = QtMultimedia.QMediaContent(url)
         player = QtMultimedia.QMediaPlayer()
         player.setMedia(content)
@@ -231,7 +231,7 @@ class EnglishButtons(EnglishLabel):
         if appdata:
             url = QtCore.QUrl.fromLocalFile(os.path.abspath(os.path.join(appdata, file_names[dialect])))
         else:
-            url = QtCore.QUrl.fromLocalFile(os.path.join("./", file_names[dialect]))
+            url = QtCore.QUrl.fromLocalFile(os.path.abspath(os.path.join("./", file_names[dialect])))
         content = QtMultimedia.QMediaContent(url)
         player = QtMultimedia.QMediaPlayer()
         player.setMedia(content)
