@@ -1,7 +1,7 @@
 # This module will download the audio from teanglannie/fuaim if it exists
 # if not, it will return related matches to search, if they exist.
 # Saved as audio_catcher.py
-# Created by Davis Sandefur; last updated 21.12.14
+# Created by Davis Sandefur; last updated 15.07.2015
 
 """ This module contains the code necessary to download the sound files for a particular word from teanglann.ie,
 assuming the files exist. It also returns related matches, if they exist. If there is no sound, it returns any related
@@ -12,6 +12,8 @@ from bs4 import BeautifulSoup
 import urllib.request
 import urllib.error
 import urllib.parse
+import os
+import sys
 
 
 def entry_search(word):
@@ -27,14 +29,14 @@ def entry_search(word):
                 end_word = word[i+1:]
                 word = begin_word + '%20' + end_word
 
-    # print(word)  # Test to make sure word is in correct form for URL
-
     slug_list = ['CanM', 'CanC', 'CanU']
     for i in slug_list:
         url = 'http://teanglann.ie/' + i + '%2F' + word + '.mp3'
-        # print(url)  # Test to check URL
         try:
-            urllib.request.urlretrieve(url, i+'.mp3')
+            if sys.platform == "win32":
+                urllib.request.urlretrieve(url, os.getenv('APPDATA')+'/'+i+'.mp3')
+            else:
+                urllib.request.urlretrieve(url, i+'.mp3')
         except urllib.error.HTTPError:
             return False
 

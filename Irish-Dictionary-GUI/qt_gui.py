@@ -1,14 +1,15 @@
 # Irish Dictionary GUI app
 # saved as qt_gui.py
-# Last edit by Davis Sandefur 24.12.2014
+# Last edit by Davis Sandefur 15.07.2015
 
-import sys, os
+import sys
+import os
 from PyQt5 import QtCore, QtWidgets, QtGui, QtMultimedia
+from PyQt5 import QtNetwork
 from irish_dictionary import irish_dictionary
 from audio_grabber import entry_search, related_matches
 
 
-# Create the widgets used by both versions
 class Text(QtWidgets.QWidget):
     """ This class creates the text widget"""
     def __init__(self, parent=None):
@@ -17,7 +18,6 @@ class Text(QtWidgets.QWidget):
         self.text_entry.setReadOnly(True)
 
 
-# Create Irish version widgets
 class IrishLabel(QtWidgets.QWidget):
     def __init__(self, parent=None):
         """ This class creates the Irish language label, entry box, and version switcher """
@@ -94,8 +94,12 @@ class IrishButtons(IrishLabel):
 
     @staticmethod
     def play_audio(dialect):
-        file_names = {'Munster': './CanM.mp3', 'Connacht': './CanC.mp3', 'Ulster': './CanU.mp3'}
-        url = QtCore.QUrl.fromLocalFile(os.path.abspath(file_names[dialect]))
+        appdata = os.getenv('APPDATA')
+        file_names = {'Munster': 'CanM.mp3', 'Connacht': 'CanC.mp3', 'Ulster': 'CanU.mp3'}
+        if appdata:
+            url = QtCore.QUrl.fromLocalFile(os.path.abspath(os.path.join(appdata, file_names[dialect])))
+        else:
+            url = QtCore.QUrl.fromLocalFile(os.path.join("./", file_names[dialect]))
         content = QtMultimedia.QMediaContent(url)
         player = QtMultimedia.QMediaPlayer()
         player.setMedia(content)
@@ -136,7 +140,6 @@ class IrishVersion(IrishButtons, Text):
         self.move(qr.topLeft())
 
 
-# Create English version widgets
 class EnglishLabel(QtWidgets.QWidget):
     """ This class Creates English labels"""
     def __init__(self, parent=None):
@@ -223,8 +226,12 @@ class EnglishButtons(EnglishLabel):
 
     @staticmethod
     def play_audio(dialect):
-        file_names = {'Munster': './CanM.mp3', 'Connacht': './CanC.mp3', 'Ulster': './CanU.mp3'}
-        url = QtCore.QUrl.fromLocalFile(os.path.abspath(file_names[dialect]))
+        appdata = os.getenv('APPDATA')
+        file_names = {'Munster': 'CanM.mp3', 'Connacht': 'CanC.mp3', 'Ulster': 'CanU.mp3'}
+        if appdata:
+            url = QtCore.QUrl.fromLocalFile(os.path.abspath(os.path.join(appdata, file_names[dialect])))
+        else:
+            url = QtCore.QUrl.fromLocalFile(os.path.join("./", file_names[dialect]))
         content = QtMultimedia.QMediaContent(url)
         player = QtMultimedia.QMediaPlayer()
         player.setMedia(content)
