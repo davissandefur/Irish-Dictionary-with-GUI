@@ -4,12 +4,12 @@
 
 """This module contains all the functions needed to scrub teanglann.ie,
 either in English or Irish , as well as the functions needed to parse the HTML
-and create a running word list of the words.""" 
-
+and create a running word list of the words."""
 
 import urllib.request
 import urllib.parse
 import urllib.error
+
 from bs4 import BeautifulSoup
 
 
@@ -41,6 +41,22 @@ def entry_lookup(word, language, version):
     if not form_of:
         return entry, suggestions, None
     return entry, suggestions, form_of
+
+
+def gaeilge_gaeilge(word):
+    """ This function searches and gets the data for the An Foclóir Beag entry from teanglann.ie
+    """
+    word = urllib.parse.quote_plus(word)
+    print(word)
+    try:
+        response = urllib.request.urlopen("http://teanglann.ie/en/fb/"+word)
+    except urllib.error.HTTPError:
+        pass
+
+    html = response.read()
+    soup = BeautifulSoup(html)
+    entry = soup.findAll("div", class_="fb entry")
+    return entry
             
 
 def entry_cleanup(html):

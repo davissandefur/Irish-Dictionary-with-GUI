@@ -15,6 +15,7 @@ def irish_dictionary(word, language, version, wordlist=[]):
     words as given by the website.  """
 
     # Gets the entry and suggestions
+
     entry, suggestion, form_of = dictionary_functions.entry_lookup(word, language, version)
     # Get entries and suggestions in a list using HTMLRead class
     entries = dictionary_functions.entry_cleanup(entry)
@@ -27,6 +28,13 @@ def irish_dictionary(word, language, version, wordlist=[]):
     wordlist = dictionary_functions.word_store(word, wordlist)
 
     return entries, suggestions, wordlist, form_of
+
+
+def gaeilge_gaeilge(word):
+    print(word)
+    entry = dictionary_functions.gaeilge_gaeilge(word)
+    entries = dictionary_functions.entry_cleanup(entry)
+    return entries
 
 if __name__ == '__main__':
     irish_entry, irish_suggestions, irish_wordlist, form_of = irish_dictionary('bí', 'irish', 'gaeilge')

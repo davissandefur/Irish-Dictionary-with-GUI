@@ -6,7 +6,7 @@ import sys
 import os
 from PyQt5 import QtCore, QtWidgets, QtGui, QtMultimedia
 from PyQt5 import QtNetwork
-from irish_dictionary import irish_dictionary
+from irish_dictionary import irish_dictionary, gaeilge_gaeilge
 from audio_grabber import entry_search, related_matches
 
 
@@ -72,9 +72,12 @@ class IrishButtons(IrishLabel):
             self.munster_button.setEnabled(False)
 
     def callback(self, language):
-        """ Irish version English-language search """
+        """ Irish version search """
         entry = str(self.irish_entry.text()).lower()
         entries, suggestions, wordlist, grammatical = irish_dictionary(entry, language, 'gaeilge')
+        entries2 = None
+        if language == 'Irish':
+            entries2 = gaeilge_gaeilge(entry)
         audio_exists = entry_search(entry)
         if audio_exists:
             related = related_matches(entry)
@@ -87,6 +90,11 @@ class IrishButtons(IrishLabel):
             self.text_entry.moveCursor(QtGui.QTextCursor.End)
             self.text_entry.insertPlainText(i + '\n\n')
         self.text_entry.moveCursor(QtGui.QTextCursor.End)
+        if entries2:
+            self.text_entry.insertPlainText("As Gaeilge:\n\n")
+            for i in entries2:
+                self.text_entry.moveCursor(QtGui.QTextCursor.End)
+                self.text_entry.insertPlainText(i + '\n\n')
         self.text_entry.insertPlainText(suggestions + "\n\nNa focail is déanaí: " + str(wordlist) +
                                         "\n\n" + '(Fuaim) Torthaí gaolmhara:' + str(related) + '\n\n')
         self.text_entry.moveCursor(QtGui.QTextCursor.End)
@@ -207,6 +215,9 @@ class EnglishButtons(EnglishLabel):
          contain(s) audio."""
         entry = str(self.english_entry.text()).lower()
         entries, suggestions, wordlist, grammatical = irish_dictionary(entry, language, 'english')
+        entries2 = None
+        if language == 'Irish':
+            entries2 = gaeilge_gaeilge(entry)
         audio_exists = entry_search(entry)
         if audio_exists:
             related = related_matches(entry)
@@ -218,6 +229,11 @@ class EnglishButtons(EnglishLabel):
         for i in entries:
             self.text_entry.moveCursor(QtGui.QTextCursor.End)
             self.text_entry.insertPlainText(i + '\n\n')
+        if entries2:
+            self.text_entry.insertPlainText("As Gaeilge:\n\n")
+            for i in entries2:
+                self.text_entry.moveCursor(QtGui.QTextCursor.End)
+                self.text_entry.insertPlainText(i + '\n\n')
         self.text_entry.moveCursor(QtGui.QTextCursor.End)
         self.text_entry.insertPlainText(suggestions + "\n\nRecently used words: " + str(wordlist) +
                                         "\n\n" + 'Related Audio Matches: ' + str(related) + '\n\n')
