@@ -47,7 +47,6 @@ def gaeilge_gaeilge(word):
     """ This function searches and gets the data for the An Foclóir Beag entry from teanglann.ie
     """
     word = urllib.parse.quote_plus(word)
-    print(word)
     try:
         response = urllib.request.urlopen("http://teanglann.ie/en/fb/"+word)
     except urllib.error.HTTPError:

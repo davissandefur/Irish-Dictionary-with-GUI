@@ -31,7 +31,6 @@ def irish_dictionary(word, language, version, wordlist=[]):
 
 
 def gaeilge_gaeilge(word):
-    print(word)
     entry = dictionary_functions.gaeilge_gaeilge(word)
     entries = dictionary_functions.entry_cleanup(entry)
     return entries

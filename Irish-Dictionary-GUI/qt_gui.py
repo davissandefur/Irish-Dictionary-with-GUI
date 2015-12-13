@@ -230,7 +230,7 @@ class EnglishButtons(EnglishLabel):
             self.text_entry.moveCursor(QtGui.QTextCursor.End)
             self.text_entry.insertPlainText(i + '\n\n')
         if entries2:
-            self.text_entry.insertPlainText("As Gaeilge:\n\n")
+            self.text_entry.insertPlainText("In Irish:\n\n")
             for i in entries2:
                 self.text_entry.moveCursor(QtGui.QTextCursor.End)
                 self.text_entry.insertPlainText(i + '\n\n')
